@@ -23,7 +23,6 @@ public class personalGUI extends javax.swing.JFrame {
      */
     public personalGUI() {
         initComponents();
-        System.out.println("Booting");
     }
 
     /**
@@ -85,8 +84,6 @@ public class personalGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Kommentar oder so
-    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tabPersonal.setModel(model);
         model.addColumn("Name");
