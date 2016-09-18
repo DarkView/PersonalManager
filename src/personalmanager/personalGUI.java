@@ -160,6 +160,11 @@ public class personalGUI extends javax.swing.JFrame {
          
               insertMitarbeiter(mitarbeiter);
               
+          }else{
+              
+              JOptionPane.showMessageDialog(this, "Fehler bei eingabe der Daten \nBitte erneut versuchen!", "Fehler", JOptionPane.ERROR_MESSAGE);
+              getNewWorkerInfo();
+              
           }
          
     }
