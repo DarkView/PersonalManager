@@ -23,6 +23,7 @@ public class personalGUI extends javax.swing.JFrame {
      */
     public personalGUI() {
         initComponents();
+        System.out.println("Booting");
     }
 
     /**
