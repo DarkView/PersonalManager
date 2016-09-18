@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @authors Dunkel, DuklerHeld
+ * @authors Dunkel, DunklerHeld
  */
 public class personalGUI extends javax.swing.JFrame {
 
