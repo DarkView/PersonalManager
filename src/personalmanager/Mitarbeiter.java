@@ -7,7 +7,7 @@ package personalmanager;
 
 /**
  *
- * @author nils.bloemeke
+ * @authors Dunkel, DunklerHeld
  */
 public class Mitarbeiter {
     
