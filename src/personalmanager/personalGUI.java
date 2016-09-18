@@ -123,7 +123,9 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitNewMitarbeiterActionPerformed
 
     private void mitSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSaveActionPerformed
+        
         saveall();
+        
     }//GEN-LAST:event_mitSaveActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
