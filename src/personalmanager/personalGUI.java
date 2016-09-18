@@ -156,7 +156,7 @@ public class personalGUI extends javax.swing.JFrame {
          
           if (salary != 0) {
               
-              Mitarbeiter mitarbeiter = new Mitarbeiter(lastNameField.getText() + "," + firstNameField.getText(), mID, salary);
+              Mitarbeiter mitarbeiter = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
          
               insertMitarbeiter(mitarbeiter);
               
