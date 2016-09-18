@@ -5,6 +5,12 @@
  */
 package personalmanager;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -197,6 +203,16 @@ public class personalGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
+                try {
+                    
+                    Connection con = DriverManager.getConnection("jdbc:mysql://darkdl.de:3306/ni520829_2sql1", "ni520829_2sql1", "hallohallo");
+                    Statement stmt = con.createStatement( );
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
                 new personalGUI().setVisible(true);
             }
         });
