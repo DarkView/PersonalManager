@@ -206,7 +206,7 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 try {
                     
-                    Connection con = DriverManager.getConnection("jdbc:mysql://darkdl.de:3306/ni520829_2sql1/", "ni520829_2sql1", "hallohallohallo");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://darkdl.de:3306/ni520829_2sql1", "ni520829_2sql1", "Hallohallo");
                     Statement stmt = con.createStatement();
                     
                 } catch (SQLException ex) {
