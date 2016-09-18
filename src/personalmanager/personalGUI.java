@@ -112,10 +112,6 @@ public class personalGUI extends javax.swing.JFrame {
         
         model.addRow(new Object[]{m.getName(), "#" + m.getPersonalNumber(), m.getSalary() + "€", m.getTime() + "h"});
         
-        /*tabPersonal.setValueAt(m.getName(), 0, 0); 
-        tabPersonal.setValueAt("#" + m.getPersonalNumber(), 0, 1);
-        tabPersonal.setValueAt(m.getSalary() + "€", 0, 2);
-        tabPersonal.setValueAt(m.getTime() + "h", 0, 3); */
     }
     
     private void getNewWorkerInfo(){
