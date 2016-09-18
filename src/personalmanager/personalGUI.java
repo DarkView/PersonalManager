@@ -5,7 +5,11 @@
  */
 package personalmanager;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.Box;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,6 +43,7 @@ public class personalGUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuOptions = new javax.swing.JMenu();
         mitNewMitarbeiter = new javax.swing.JMenuItem();
+        mitSave = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
@@ -64,6 +69,15 @@ public class personalGUI extends javax.swing.JFrame {
         });
         mnuOptions.add(mitNewMitarbeiter);
 
+        mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
+        mitSave.setText("Speichern");
+        mitSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitSaveActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitSave);
+
         jMenuBar1.add(mnuOptions);
 
         setJMenuBar(jMenuBar1);
@@ -84,6 +98,9 @@ public class personalGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    Mitarbeiter[] mitarbeiter = new Mitarbeiter[8999];
+    int mitarbeiterCount = 0;
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tabPersonal.setModel(model);
         model.addColumn("Name");
@@ -91,11 +108,11 @@ public class personalGUI extends javax.swing.JFrame {
         model.addColumn("Gehalt");
         model.addColumn("Zeit gearbeitet");
         
-        int mID = (int)(Math.random() * 8999) + 1000;
+        int mID = 1000 + mitarbeiterCount;
         
-        Mitarbeiter mitarbeiter = new Mitarbeiter("Perlick, Tim", mID, 8.50);
-        
-        insertMitarbeiter(mitarbeiter);
+        mitarbeiter[mitarbeiterCount] = new Mitarbeiter("Perlick, Tim", mID, 8.50);
+        insertMitarbeiter(mitarbeiter[mitarbeiterCount]);
+        mitarbeiterCount++;
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -105,6 +122,43 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitNewMitarbeiterActionPerformed
 
+    private void mitSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitSaveActionPerformed
+        saveall();
+    }//GEN-LAST:event_mitSaveActionPerformed
+
+    JFileChooser fChooser = new JFileChooser();
+    
+    private void saveall() {
+        if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+            String path = fChooser.getSelectedFile().toString();
+            String p = path.substring(0, path.lastIndexOf('\\') + 1);
+            p = p + "mitarbeiter";
+            System.out.println(path);
+            System.out.println(p);
+            System.out.println(mitarbeiter[0]);
+            System.out.println(mitarbeiter[1]);
+            
+            try
+            {
+                while(true) {
+                    int i = 0;
+                    if(mitarbeiter[i] == null) {
+                        break;
+                    }
+                    BufferedWriter dat = new BufferedWriter(new FileWriter(p + mitarbeiter[i].getPersonalNumber() + ".txt"));
+                    dat.write(mitarbeiter[i].getName());
+                    dat.close();
+                    System.out.println("Success");
+                }
+            }
+            catch (IOException x)
+            {
+              JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
+            }
+        }
+    }
+
+    
     private DefaultTableModel model = new DefaultTableModel(0, 0) {};
     
     
@@ -152,13 +206,13 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
          
-         int mID = (int)(Math.random() * 8999) + 1000;
+         int mID = 1000 + mitarbeiterCount;
          
           if (salary != 0) {
               
-              Mitarbeiter mitarbeiter = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
-         
-              insertMitarbeiter(mitarbeiter);
+              mitarbeiter[mitarbeiterCount] = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
+              insertMitarbeiter(mitarbeiter[mitarbeiterCount]);
+              mitarbeiterCount++;
               
           }else{
               
@@ -217,6 +271,7 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem mitNewMitarbeiter;
+    private javax.swing.JMenuItem mitSave;
     private javax.swing.JMenu mnuOptions;
     private javax.swing.JTable tabPersonal;
     // End of variables declaration//GEN-END:variables
