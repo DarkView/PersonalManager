@@ -15,6 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -130,7 +133,7 @@ public class personalGUI extends javax.swing.JFrame {
 
     JFileChooser fChooser = new JFileChooser();
     
-    private void saveall() {
+    /*private void saveall() {
         if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             String path = fChooser.getSelectedFile().toString();
             String p = path.substring(0, path.lastIndexOf('\\') + 1);
@@ -158,6 +161,31 @@ public class personalGUI extends javax.swing.JFrame {
               JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
             }
         }
+    }*/
+    
+    private void saveall(){
+        
+        @XmlRootElement(name="Mitarbeiter")
+         class Mitarbeiter{
+            private String name;
+            private Boolean childrenAllowed;
+            
+            @XmlElement(name="Mitarbeiter_Name")
+            public void setName(String name){
+                
+                this.name = name;
+                
+            }
+            
+            @XmlAttribute(name="children_allowed")
+            public void setChildrenAllowed(Boolean childrenAllowed){
+                
+                this.childrenAllowed = childrenAllowed;
+                
+            }
+            
+        }
+        
     }
 
     
