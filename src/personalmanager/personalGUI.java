@@ -163,18 +163,23 @@ public class personalGUI extends javax.swing.JFrame {
             }
             }*/
             
-            /* init jaxb marshaler */
-            JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
+            MitarbeiterListe listeDerMitarbeiter = new MitarbeiterListe();
+            
+            for (int i = 0; i < mitarbeiterCount; i++) {
+                
+                listeDerMitarbeiter.add(mitarbeiter[i]);
+                
+            }
+            
+            /* init jaxb marshaler */     
+            JAXBContext jaxbContext = JAXBContext.newInstance(MitarbeiterListe.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
             jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+            
+            jaxbMarshaller.marshal(listeDerMitarbeiter, new File("mitarbeiter.xml"));
+            jaxbMarshaller.marshal(listeDerMitarbeiter, System.out );
 
-            for (int i = 0; i < mitarbeiterCount; i++) {
-            
-            jaxbMarshaller.marshal(mitarbeiter[i], new File("mitarbeiter" + i + ".xml"));
-            jaxbMarshaller.marshal(mitarbeiter[i], System.out );
-            
-            }
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

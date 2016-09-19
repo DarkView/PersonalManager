@@ -107,14 +107,4 @@ public class Mitarbeiter {
     public double getSalary() {
         return msalary;
     }
-    
-    //Boolean childrenAllowed;
-    
-    //@XmlAttribute(name="children_allowed")
-    //public void setChildrenAllowed(Boolean childrenAllowed){
-        
-        //this.childrenAllowed = childrenAllowed;
-        
-    //}
-    
-    }
+}
