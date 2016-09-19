@@ -328,7 +328,7 @@ this.addWindowListener(exitListener);
         
     }
     
-    //Alter Code:
+    //Alter Code (Friedhof):
     
     /*if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             String path = fChooser.getSelectedFile().toString();
