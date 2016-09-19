@@ -5,7 +5,13 @@
  */
 package personalmanager;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -51,6 +57,9 @@ public class personalGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -93,7 +102,7 @@ public class personalGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
         );
 
         getAccessibleContext().setAccessibleName("MitarbeiterForm");
@@ -103,6 +112,12 @@ public class personalGUI extends javax.swing.JFrame {
 
     Mitarbeiter[] mitarbeiter = new Mitarbeiter[8999];
     int mitarbeiterCount = 0;
+    
+    String appdata = System.getenv("APPDATA");
+        
+        boolean success;
+            
+        String xmlfolder = appdata + "/PersonalManager/";
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tabPersonal.setModel(model);
@@ -116,6 +131,29 @@ public class personalGUI extends javax.swing.JFrame {
         mitarbeiter[mitarbeiterCount] = new Mitarbeiter("Perlick, Tim", mID, 8.50);
         insertMitarbeiter(mitarbeiter[mitarbeiterCount]);
         mitarbeiterCount++;
+        
+        success = (new File(appdata + "/PersonalManager")).mkdirs();
+        
+        if (!success) {
+                
+            System.out.println("Folder creation Failed (" + xmlfolder + ")");
+                
+        }else{
+                
+            System.out.println("Folder created (" + xmlfolder + ")");
+                
+        }
+        
+        WindowListener exitListener = new WindowAdapter() {
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            
+            closeMe();
+
+        }
+    };
+this.addWindowListener(exitListener);
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -131,6 +169,10 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitSaveActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        
+    }//GEN-LAST:event_formWindowClosing
+
     JFileChooser fChooser = new JFileChooser();
     
     private void saveall() {
@@ -138,22 +180,20 @@ public class personalGUI extends javax.swing.JFrame {
             
             //Alten Code nach ganz unten verschoben
             
-            MitarbeiterListe listeDerMitarbeiter = new MitarbeiterListe();
-            
             for (int i = 0; i < mitarbeiterCount; i++) {
                 
-                listeDerMitarbeiter.add(mitarbeiter[i]);
+                JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
+                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+                jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+            
+                jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+                jaxbMarshaller.marshal(mitarbeiter[i], System.out ); 
                 
             }
             
             /* init jaxb marshaler */     
-            JAXBContext jaxbContext = JAXBContext.newInstance(MitarbeiterListe.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-            jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
             
-            jaxbMarshaller.marshal(listeDerMitarbeiter, new File("mitarbeiter.xml"));
-            jaxbMarshaller.marshal(listeDerMitarbeiter, System.out );
 
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -224,6 +264,25 @@ public class personalGUI extends javax.swing.JFrame {
           }
          
     }
+    }
+    
+    private void closeMe(){
+               
+        PrintWriter writer = null;
+        try {
+            
+            writer = new PrintWriter(xmlfolder + "mitarbeiterAnzahl.txt", "UTF-8");
+            writer.println(mitarbeiterCount);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            writer.close();
+            System.exit(0);
+        }
+        
     }
     
     public static void main(String[] args) {
