@@ -271,12 +271,10 @@ this.addWindowListener(exitListener);
         PrintWriter writer = null;
         try {
             
-            writer = new PrintWriter(xmlfolder + "mitarbeiterAnzahl.txt", "UTF-8");
-            writer.println(mitarbeiterCount);
+            writer = new PrintWriter(xmlfolder + "settings.cfg");
+            writer.print("workcount: " + mitarbeiterCount);
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             writer.close();
