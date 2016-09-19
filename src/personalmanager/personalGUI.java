@@ -135,33 +135,8 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void saveall() {
         try {
-            /*if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
-            String path = fChooser.getSelectedFile().toString();
-            String p = path.substring(0, path.lastIndexOf('\\') + 1);
-            p = p + "mitarbeiter";
-            System.out.println(path);
-            System.out.println(p);
-            System.out.println(mitarbeiter[0]);
-            System.out.println(mitarbeiter[1]);
             
-            try
-            {
-            while(true) {
-            int i = 0;
-            if(mitarbeiter[i] == null) {
-            break;
-            }
-            BufferedWriter dat = new BufferedWriter(new FileWriter(p + mitarbeiter[i].getPersonalNumber() + ".txt"));
-            dat.write(mitarbeiter[i].getName());
-            dat.close();
-            System.out.println("Success");
-            }
-            }
-            catch (IOException x)
-            {
-            JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
-            }
-            }*/
+            //Alten Code nach ganz unten verschoben
             
             MitarbeiterListe listeDerMitarbeiter = new MitarbeiterListe();
             
@@ -293,6 +268,36 @@ public class personalGUI extends javax.swing.JFrame {
         });
         
     }
+    
+    //Alter Code:
+    
+    /*if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+            String path = fChooser.getSelectedFile().toString();
+            String p = path.substring(0, path.lastIndexOf('\\') + 1);
+            p = p + "mitarbeiter";
+            System.out.println(path);
+            System.out.println(p);
+            System.out.println(mitarbeiter[0]);
+            System.out.println(mitarbeiter[1]);
+            
+            try
+            {
+            while(true) {
+            int i = 0;
+            if(mitarbeiter[i] == null) {
+            break;
+            }
+            BufferedWriter dat = new BufferedWriter(new FileWriter(p + mitarbeiter[i].getPersonalNumber() + ".txt"));
+            dat.write(mitarbeiter[i].getName());
+            dat.close();
+            System.out.println("Success");
+            }
+            }
+            catch (IOException x)
+            {
+            JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
+            }
+            }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;

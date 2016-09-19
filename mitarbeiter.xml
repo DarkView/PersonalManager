@@ -7,9 +7,15 @@
         <mtime>0.0</mtime>
     </MITARBEITER>
     <MITARBEITER>
-        <mname>Blömeke, Nils</mname>
+        <mname>Erbslöh, Erik</mname>
         <mpersonalNumber>1001</mpersonalNumber>
-        <msalary>123.0</msalary>
+        <msalary>10.0</msalary>
+        <mtime>0.0</mtime>
+    </MITARBEITER>
+    <MITARBEITER>
+        <mname>Blömeke, Nils</mname>
+        <mpersonalNumber>1002</mpersonalNumber>
+        <msalary>11.5</msalary>
         <mtime>0.0</mtime>
     </MITARBEITER>
 </MITARBEITERLISTE>
