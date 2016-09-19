@@ -6,8 +6,11 @@
 package personalmanager;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -15,6 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 /**
  *
@@ -131,7 +137,8 @@ public class personalGUI extends javax.swing.JFrame {
     JFileChooser fChooser = new JFileChooser();
     
     private void saveall() {
-        if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+        try {
+            /*if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             String path = fChooser.getSelectedFile().toString();
             String p = path.substring(0, path.lastIndexOf('\\') + 1);
             p = p + "mitarbeiter";
@@ -142,22 +149,38 @@ public class personalGUI extends javax.swing.JFrame {
             
             try
             {
-                while(true) {
-                    int i = 0;
-                    if(mitarbeiter[i] == null) {
-                        break;
-                    }
-                    BufferedWriter dat = new BufferedWriter(new FileWriter(p + mitarbeiter[i].getPersonalNumber() + ".txt"));
-                    dat.write(mitarbeiter[i].getName());
-                    dat.close();
-                    System.out.println("Success");
-                }
+            while(true) {
+            int i = 0;
+            if(mitarbeiter[i] == null) {
+            break;
+            }
+            BufferedWriter dat = new BufferedWriter(new FileWriter(p + mitarbeiter[i].getPersonalNumber() + ".txt"));
+            dat.write(mitarbeiter[i].getName());
+            dat.close();
+            System.out.println("Success");
+            }
             }
             catch (IOException x)
             {
-              JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
+            JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
             }
+            }*/
+            
+            /* init jaxb marshaler */
+            JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            /* set this flag to true to format the output */
+            jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+
+            /* marshaling of java objects in xml (output to file and standard output) */
+            jaxbMarshaller.marshal(mitarbeiter, new File( "museums.xml" ) );
+            jaxbMarshaller.marshal(mitarbeiter, System.out );
+            
+        } catch (JAXBException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     private DefaultTableModel model = new DefaultTableModel(0, 0) {};

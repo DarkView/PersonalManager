@@ -5,10 +5,18 @@
  */
 package personalmanager;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @authors Dunkel, DunklerHeld
  */
+@XmlRootElement(name="MITARBEITER")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Mitarbeiter {
     
     private String name;
@@ -22,7 +30,7 @@ public class Mitarbeiter {
         this.salary = salary;
         this.time = 0;
     }
-    
+
     public double calcSalary(){
         double calculatedSalary;
         calculatedSalary = this.getSalary() * this.getTime();
@@ -48,6 +56,7 @@ public class Mitarbeiter {
     /**
      * @param name the name to set
      */
+    @XmlElement(name="MITARBEITER_NAME")
     public void setName(String name) {
         this.name = name;
     }
@@ -62,6 +71,7 @@ public class Mitarbeiter {
     /**
      * @param personalNumber the personalNumber to set
      */
+    @XmlElement(name="MITARBEITER_ID")
     public void setPersonalNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
@@ -69,6 +79,7 @@ public class Mitarbeiter {
     /**
      * @param salary the salary to set
      */
+    @XmlElement(name="MITARBEITER_GEHALT")
     public void setSalary(double salary) {
         this.salary = salary;
     }
@@ -83,6 +94,7 @@ public class Mitarbeiter {
     /**
      * @param time the time to set
      */
+    @XmlElement(name="MITARBEITER_ZEIT")
     public void setTime(double time) {
         this.time = time;
     }
@@ -94,6 +106,13 @@ public class Mitarbeiter {
         return salary;
     }
     
+    Boolean childrenAllowed;
     
+    @XmlAttribute(name="children_allowed")
+    public void setChildrenAllowed(Boolean childrenAllowed){
+        
+        this.childrenAllowed = childrenAllowed;
+        
+    }
     
 }
