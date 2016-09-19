@@ -5,10 +5,7 @@
  */
 package personalmanager;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -170,13 +167,14 @@ public class personalGUI extends javax.swing.JFrame {
             JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-            /* set this flag to true to format the output */
             jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
 
-            /* marshaling of java objects in xml (output to file and standard output) */
-            jaxbMarshaller.marshal(mitarbeiter, new File( "museums.xml" ) );
-            jaxbMarshaller.marshal(mitarbeiter, System.out );
+            for (int i = 0; i < mitarbeiterCount; i++) {
             
+            jaxbMarshaller.marshal(mitarbeiter[i], new File("mitarbeiter" + i + ".xml"));
+            jaxbMarshaller.marshal(mitarbeiter[i], System.out );
+            
+            }
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
