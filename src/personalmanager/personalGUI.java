@@ -8,10 +8,13 @@ package personalmanager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -24,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 /**
  *
@@ -144,6 +148,44 @@ public class personalGUI extends javax.swing.JFrame {
                 
         }
         
+        File config = new File(xmlfolder + "settings.cfg");
+        String line = null;
+        int workerCount;
+        try {
+            BufferedReader dat = new BufferedReader(new FileReader(config));
+            line = dat.readLine();
+            dat.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("FEHLER! Erster Start?");
+        } catch (IOException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception x) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, x);
+            System.out.println("FEHLER! Erster Start?");
+        }
+        
+        String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
+        workerCount = Integer.parseInt(linel);
+        
+        try {
+            
+            JAXBContext jc = JAXBContext.newInstance(Mitarbeiter.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            
+            for (int i = 0; i < workerCount; i++) {
+            
+            Mitarbeiter mitarbeiter = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+                System.out.println(mitarbeiter.getName());
+            }
+
+        } catch (Exception e) {
+            
+            System.out.println("Fehler beim unmarshalen");
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
+            
+        }
+        
         WindowListener exitListener = new WindowAdapter() {
 
         @Override
@@ -153,7 +195,8 @@ public class personalGUI extends javax.swing.JFrame {
 
         }
     };
-this.addWindowListener(exitListener);
+        
+    this.addWindowListener(exitListener);
         
     }//GEN-LAST:event_formWindowOpened
 
@@ -170,7 +213,7 @@ this.addWindowListener(exitListener);
     }//GEN-LAST:event_mitSaveActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        
+        closeMe();
     }//GEN-LAST:event_formWindowClosing
 
     JFileChooser fChooser = new JFileChooser();
@@ -191,9 +234,6 @@ this.addWindowListener(exitListener);
                 jaxbMarshaller.marshal(mitarbeiter[i], System.out ); 
                 
             }
-            
-            /* init jaxb marshaler */     
-            
 
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -268,8 +308,6 @@ this.addWindowListener(exitListener);
     
     private void closeMe(){
         
-        saveall();
-               
         PrintWriter writer = null;
         try {
             
@@ -283,6 +321,8 @@ this.addWindowListener(exitListener);
             System.exit(0);
         }
         
+        saveall();
+
     }
     
     public static void main(String[] args) {
