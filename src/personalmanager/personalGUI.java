@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -130,12 +129,6 @@ public class personalGUI extends javax.swing.JFrame {
         model.addColumn("Gehalt");
         model.addColumn("Zeit gearbeitet");
         
-        int mID = 1000 + mitarbeiterCount;
-        
-        mitarbeiter[mitarbeiterCount] = new Mitarbeiter("Perlick, Tim", mID, 8.50);
-        insertMitarbeiter(mitarbeiter[mitarbeiterCount]);
-        mitarbeiterCount++;
-        
         success = (new File(appdata + "/PersonalManager")).mkdirs();
         
         if (!success) {
@@ -175,8 +168,9 @@ public class personalGUI extends javax.swing.JFrame {
             
             for (int i = 0; i < workerCount; i++) {
             
-            Mitarbeiter mitarbeiter = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
-                System.out.println(mitarbeiter.getName());
+            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+                insertMitarbeiter(mitarbeiter[i]);
+            
             }
 
         } catch (Exception e) {
