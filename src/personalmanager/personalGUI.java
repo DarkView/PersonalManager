@@ -267,12 +267,14 @@ this.addWindowListener(exitListener);
     }
     
     private void closeMe(){
+        
+        saveall();
                
         PrintWriter writer = null;
         try {
             
             writer = new PrintWriter(xmlfolder + "settings.cfg");
-            writer.print("workcount: " + mitarbeiterCount);
+            writer.print("workercount: " + mitarbeiterCount);
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
