@@ -207,15 +207,13 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitReloadActionPerformed
 
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_mitDeleteActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
     private void saveall() {
         try {
-            
-            //Alten Code nach ganz unten verschoben
             
             for (int i = 0; i < mitarbeiterCount; i++) {
                 
