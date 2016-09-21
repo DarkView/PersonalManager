@@ -10,8 +10,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -75,11 +77,6 @@ public class personalGUI extends javax.swing.JFrame {
         tabPersonal.setModel(model);
         tabPersonal.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tabPersonal.getTableHeader().setReorderingAllowed(false);
-        tabPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tabPersonalMousePressed(evt);
-            }
-        });
         jScrollPane1.setViewportView(tabPersonal);
 
         mnuOptions.setText("Optionen");
@@ -209,10 +206,6 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitReloadActionPerformed
 
-    private void tabPersonalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPersonalMousePressed
-      
-    }//GEN-LAST:event_tabPersonalMousePressed
-
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mitDeleteActionPerformed
@@ -229,7 +222,7 @@ public class personalGUI extends javax.swing.JFrame {
                 JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
                 Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-                jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             
                 jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + i + ".xml"));
                 System.out.println("Mitarbeiter " + mitarbeiter[i].getName() + " gespeichert"); 
@@ -353,10 +346,22 @@ public class personalGUI extends javax.swing.JFrame {
             
             JAXBContext jc = JAXBContext.newInstance(Mitarbeiter.class);
             Unmarshaller um = jc.createUnmarshaller();
-            
+            File xmlfiles = new File(xmlfolder);
+            File[] files = xmlfiles.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                if(name.contains("mitarbeiter")) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
             for (int i = 0; i < workerCount; i++) {
             
-            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(files[i]);
                 insertMitarbeiter(mitarbeiter[i]);
             
             }
@@ -369,8 +374,7 @@ public class personalGUI extends javax.swing.JFrame {
         }
         
         File x = new File(xmlfolder);
-        System.out.println(Arrays.toString(x.listFiles()));
-        
+
         mitarbeiterCount = workerCount;
         
     }
@@ -417,6 +421,8 @@ public class personalGUI extends javax.swing.JFrame {
         });
         
     }
+    
+    
     
     //Alter Code (Friedhof):
     
