@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -56,6 +57,8 @@ public class personalGUI extends javax.swing.JFrame {
         mnuOptions = new javax.swing.JMenu();
         mitNewMitarbeiter = new javax.swing.JMenuItem();
         mitSave = new javax.swing.JMenuItem();
+        mitReload = new javax.swing.JMenuItem();
+        mitDelete = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
@@ -68,9 +71,15 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
 
+        tabPersonal.setAutoCreateRowSorter(true);
         tabPersonal.setModel(model);
         tabPersonal.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tabPersonal.getTableHeader().setReorderingAllowed(false);
+        tabPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tabPersonalMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabPersonal);
 
         mnuOptions.setText("Optionen");
@@ -92,6 +101,24 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuOptions.add(mitSave);
+
+        mitReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        mitReload.setText("Neu laden");
+        mitReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitReloadActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitReload);
+
+        mitDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
+        mitDelete.setText("Mitarbeiter Löschen");
+        mitDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitDeleteActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitDelete);
 
         jMenuBar1.add(mnuOptions);
 
@@ -128,7 +155,7 @@ public class personalGUI extends javax.swing.JFrame {
         model.addColumn("Mitarbeiter-ID");
         model.addColumn("Gehalt");
         model.addColumn("Zeit gearbeitet");
-        
+
         success = (new File(appdata + "/PersonalManager")).mkdirs();
         
         if (!success) {
@@ -141,44 +168,7 @@ public class personalGUI extends javax.swing.JFrame {
                 
         }
         
-        File config = new File(xmlfolder + "settings.cfg");
-        String line = null;
-        int workerCount;
-        try {
-            BufferedReader dat = new BufferedReader(new FileReader(config));
-            line = dat.readLine();
-            dat.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("FEHLER! Erster Start?");
-        } catch (IOException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception x) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, x);
-            System.out.println("FEHLER! Erster Start?");
-        }
-        
-        String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
-        workerCount = Integer.parseInt(linel);
-        
-        try {
-            
-            JAXBContext jc = JAXBContext.newInstance(Mitarbeiter.class);
-            Unmarshaller um = jc.createUnmarshaller();
-            
-            for (int i = 0; i < workerCount; i++) {
-            
-            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
-                insertMitarbeiter(mitarbeiter[i]);
-            
-            }
-
-        } catch (Exception e) {
-            
-            System.out.println("Fehler beim unmarshalen");
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
-            
-        }
+        loadall();
         
         WindowListener exitListener = new WindowAdapter() {
 
@@ -207,8 +197,25 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitSaveActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        saveall();
         closeMe();
     }//GEN-LAST:event_formWindowClosing
+
+    private void mitReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitReloadActionPerformed
+        
+        model.setRowCount(0);
+        
+        loadall();
+        
+    }//GEN-LAST:event_mitReloadActionPerformed
+
+    private void tabPersonalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPersonalMousePressed
+      
+    }//GEN-LAST:event_tabPersonalMousePressed
+
+    private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mitDeleteActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
@@ -225,7 +232,7 @@ public class personalGUI extends javax.swing.JFrame {
                 jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
             
                 jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + i + ".xml"));
-                jaxbMarshaller.marshal(mitarbeiter[i], System.out ); 
+                System.out.println("Mitarbeiter " + mitarbeiter[i].getName() + " gespeichert"); 
                 
             }
 
@@ -319,6 +326,55 @@ public class personalGUI extends javax.swing.JFrame {
 
     }
     
+    public void loadall(){
+        
+        File config = new File(xmlfolder + "settings.cfg");
+        
+        String line = null;
+        int workerCount;
+        try {
+            BufferedReader dat = new BufferedReader(new FileReader(config));
+            line = dat.readLine();
+            dat.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("FEHLER! Erster Start?");
+        } catch (IOException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception x) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, x);
+            System.out.println("FEHLER! Erster Start?");
+        }
+        
+        String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
+        workerCount = Integer.parseInt(linel);
+        
+        try {
+            
+            JAXBContext jc = JAXBContext.newInstance(Mitarbeiter.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            
+            for (int i = 0; i < workerCount; i++) {
+            
+            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+                insertMitarbeiter(mitarbeiter[i]);
+            
+            }
+
+        } catch (Exception e) {
+            
+            System.out.println("Fehler beim unmarshalen");
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
+            
+        }
+        
+        File x = new File(xmlfolder);
+        System.out.println(Arrays.toString(x.listFiles()));
+        
+        mitarbeiterCount = workerCount;
+        
+    }
+    
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -395,7 +451,9 @@ public class personalGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem mitDelete;
     private javax.swing.JMenuItem mitNewMitarbeiter;
+    private javax.swing.JMenuItem mitReload;
     private javax.swing.JMenuItem mitSave;
     private javax.swing.JMenu mnuOptions;
     private javax.swing.JTable tabPersonal;
