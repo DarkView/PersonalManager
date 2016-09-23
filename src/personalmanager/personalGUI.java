@@ -10,13 +10,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -217,7 +215,10 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitReloadActionPerformed
 
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
-
+        int delete = tabPersonal.getSelectedRow();
+        Mitarbeiter m = mitarbeiter[delete];
+        System.out.println(m.getName());
+        System.out.println(m.getPersonalNumber());
     }//GEN-LAST:event_mitDeleteActionPerformed
 
     private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
@@ -251,7 +252,7 @@ public class personalGUI extends javax.swing.JFrame {
 
                 jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             
-                jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + i + ".xml"));
+                jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + mitarbeiter[i].getPersonalNumber() + ".xml"));
                 System.out.println("Mitarbeiter " + mitarbeiter[i].getName() + " gespeichert"); 
                 
             }
@@ -262,7 +263,10 @@ public class personalGUI extends javax.swing.JFrame {
         
     }
 
-    private DefaultTableModel model = new DefaultTableModel(0, 0) {};
+    private DefaultTableModel model = new DefaultTableModel(0, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column){return false;} 
+            };
     
     
     public void insertMitarbeiter(Mitarbeiter m) {
@@ -387,7 +391,7 @@ public class personalGUI extends javax.swing.JFrame {
 
             for (int i = 0; i < workerCount; i++) {
             
-            mitarbeiter[i] = (Mitarbeiter) um.unmarshal(files[i]);
+                mitarbeiter[i] = (Mitarbeiter) um.unmarshal(files[i]);
                 insertMitarbeiter(mitarbeiter[i]);
             
             }
