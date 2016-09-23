@@ -219,6 +219,11 @@ public class personalGUI extends javax.swing.JFrame {
         Mitarbeiter m = mitarbeiter[delete];
         System.out.println(m.getName());
         System.out.println(m.getPersonalNumber());
+        File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+        System.out.println(f.getPath());
+        f.delete();
+        saveall();
+        loadall();
     }//GEN-LAST:event_mitDeleteActionPerformed
 
     private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
