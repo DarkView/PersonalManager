@@ -239,6 +239,7 @@ public class personalGUI extends javax.swing.JFrame {
           
           int searchID = Integer.parseInt(idField.getText().trim());
           int toEditID = searchID - 1000;
+          int mitNummer = 0;
           
           try{
           
@@ -247,6 +248,7 @@ public class personalGUI extends javax.swing.JFrame {
               if (mitarbeiter[i].getPersonalNumber() == searchID) {
                   
                   mit = mitarbeiter[i];
+                  mitNummer = i;
                   i = toEditID;
                   mitFound = true;
               
@@ -255,7 +257,7 @@ public class personalGUI extends javax.swing.JFrame {
           
           }catch(Exception ex){
               
-              System.out.println("Muup");
+              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
               
           }
     
@@ -279,7 +281,9 @@ public class personalGUI extends javax.swing.JFrame {
             
               if (resultEdit == JOptionPane.OK_OPTION) {
                   
-                  
+                  mitarbeiter[mitNummer].setName(nameField.getText());
+                  mitarbeiter[mitNummer].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
+                  saveall();
                   
               }
       
@@ -289,7 +293,9 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
           
-      
+        model.setRowCount(0);
+        
+        loadall();
           
       }
         
@@ -315,6 +321,8 @@ public class personalGUI extends javax.swing.JFrame {
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
         
     }
 
