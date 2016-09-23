@@ -232,9 +232,64 @@ public class personalGUI extends javax.swing.JFrame {
       int result = JOptionPane.showConfirmDialog(null, editWorker, 
                "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       
+      Mitarbeiter mit = null;
+      boolean mitFound = false;
+      
       if (result == JOptionPane.OK_OPTION) {
           
+          int searchID = Integer.parseInt(idField.getText().trim());
+          int toEditID = searchID - 1000;
           
+          try{
+          
+          for (int i = 0; i <= toEditID; i++) {
+              
+              if (mitarbeiter[i].getPersonalNumber() == searchID) {
+                  
+                  mit = mitarbeiter[i];
+                  i = toEditID;
+                  mitFound = true;
+              
+              }
+          }
+          
+          }catch(Exception ex){
+              
+              System.out.println("Muup");
+              
+          }
+    
+          if (mitFound == true) {
+      
+            JTextField nameField = new JTextField(15);
+            JTextField salaryField = new JTextField(5);
+
+            JPanel toEditWorker = new JPanel();
+            toEditWorker.add(new JLabel("Vorname:"));
+            toEditWorker.add(nameField);
+            toEditWorker.add(Box.createHorizontalStrut(10));
+            toEditWorker.add(new JLabel("Gehalt:"));
+            toEditWorker.add(salaryField);
+            
+            nameField.setText(mit.getName());
+            salaryField.setText(Double.toString(mit.getSalary()) + "€");
+                  
+            int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
+               "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            
+              if (resultEdit == JOptionPane.OK_OPTION) {
+                  
+                  
+                  
+              }
+      
+          }else{
+              
+              JOptionPane.showMessageDialog(null, "Mitarbeiter mit der ID #" + searchID + " konnte nicht gefunden werden!", "Fehler", JOptionPane.OK_OPTION);
+              
+          }
+          
+      
           
       }
         
