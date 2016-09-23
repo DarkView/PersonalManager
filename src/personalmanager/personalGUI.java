@@ -327,8 +327,6 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
     }
 
     private DefaultTableModel model = new DefaultTableModel(0, 0) {
