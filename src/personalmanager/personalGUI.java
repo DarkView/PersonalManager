@@ -60,6 +60,7 @@ public class personalGUI extends javax.swing.JFrame {
         mitNewMitarbeiter = new javax.swing.JMenuItem();
         mitSave = new javax.swing.JMenuItem();
         mitReload = new javax.swing.JMenuItem();
+        mitEdit = new javax.swing.JMenuItem();
         mitDelete = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,6 +108,15 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuOptions.add(mitReload);
+
+        mitEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        mitEdit.setText("Mitarbeiter bearbeiten");
+        mitEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitEditActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitEdit);
 
         mitDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
         mitDelete.setText("Mitarbeiter Löschen");
@@ -209,6 +219,12 @@ public class personalGUI extends javax.swing.JFrame {
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
 
     }//GEN-LAST:event_mitDeleteActionPerformed
+
+    private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_mitEditActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
@@ -328,8 +344,7 @@ public class personalGUI extends javax.swing.JFrame {
             line = dat.readLine();
             dat.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("FEHLER! Erster Start?");
+            System.out.println("Datei nicht gefunden. Werde keine daten einlesen.");
         } catch (IOException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception x) {
@@ -456,6 +471,7 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem mitDelete;
+    private javax.swing.JMenuItem mitEdit;
     private javax.swing.JMenuItem mitNewMitarbeiter;
     private javax.swing.JMenuItem mitReload;
     private javax.swing.JMenuItem mitSave;
