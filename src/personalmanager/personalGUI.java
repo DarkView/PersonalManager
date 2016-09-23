@@ -222,7 +222,20 @@ public class personalGUI extends javax.swing.JFrame {
 
     private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
         
-        
+      JTextField idField = new JTextField(5);
+      
+      JPanel editWorker = new JPanel();
+      editWorker.add(new JLabel("Mitarbeiter-ID:"));
+      editWorker.add(idField);
+
+      int result = JOptionPane.showConfirmDialog(null, editWorker, 
+               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      
+      if (result == JOptionPane.OK_OPTION) {
+          
+          
+          
+      }
         
     }//GEN-LAST:event_mitEditActionPerformed
 
