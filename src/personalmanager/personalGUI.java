@@ -421,7 +421,7 @@ public class personalGUI extends javax.swing.JFrame {
         File config = new File(xmlfolder + "settings.cfg");
         
         String line = null;
-        int workerCount;
+        int workerCount = 0;
         try {
             BufferedReader dat = new BufferedReader(new FileReader(config));
             line = dat.readLine();
@@ -435,8 +435,16 @@ public class personalGUI extends javax.swing.JFrame {
             System.out.println("FEHLER! Erster Start?");
         }
         
+        try{
+        
         String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
         workerCount = Integer.parseInt(linel);
+        
+        }catch(NullPointerException ex){
+            
+            System.out.println("Konnte workercount nicht auslesen!");
+            
+        }
         
         try {
             
