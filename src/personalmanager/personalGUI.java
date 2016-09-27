@@ -56,10 +56,13 @@ public class personalGUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuOptions = new javax.swing.JMenu();
         mitNewMitarbeiter = new javax.swing.JMenuItem();
-        mitSave = new javax.swing.JMenuItem();
-        mitReload = new javax.swing.JMenuItem();
         mitEdit = new javax.swing.JMenuItem();
         mitDelete = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        mitSave = new javax.swing.JMenuItem();
+        mitReload = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mitDB = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
@@ -89,24 +92,6 @@ public class personalGUI extends javax.swing.JFrame {
         });
         mnuOptions.add(mitNewMitarbeiter);
 
-        mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
-        mitSave.setText("Speichern");
-        mitSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mitSaveActionPerformed(evt);
-            }
-        });
-        mnuOptions.add(mitSave);
-
-        mitReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        mitReload.setText("Neu laden");
-        mitReload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mitReloadActionPerformed(evt);
-            }
-        });
-        mnuOptions.add(mitReload);
-
         mitEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         mitEdit.setText("Mitarbeiter bearbeiten");
         mitEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +109,34 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuOptions.add(mitDelete);
+        mnuOptions.add(jSeparator2);
+
+        mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
+        mitSave.setText("Speichern");
+        mitSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitSaveActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitSave);
+
+        mitReload.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        mitReload.setText("Neu laden");
+        mitReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitReloadActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitReload);
+        mnuOptions.add(jSeparator1);
+
+        mitDB.setText("Mit Datenbank verbinden");
+        mitDB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitDBActionPerformed(evt);
+            }
+        });
+        mnuOptions.add(mitDB);
 
         jMenuBar1.add(mnuOptions);
 
@@ -305,6 +318,12 @@ public class personalGUI extends javax.swing.JFrame {
       }
         
     }//GEN-LAST:event_mitEditActionPerformed
+
+    private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_mitDBActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
@@ -561,6 +580,9 @@ public class personalGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenuItem mitDB;
     private javax.swing.JMenuItem mitDelete;
     private javax.swing.JMenuItem mitEdit;
     private javax.swing.JMenuItem mitNewMitarbeiter;
