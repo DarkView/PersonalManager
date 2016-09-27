@@ -215,7 +215,6 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitSaveActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        saveall();
         closeMe();
     }//GEN-LAST:event_formWindowClosing
 
@@ -235,6 +234,8 @@ public class personalGUI extends javax.swing.JFrame {
         File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
         System.out.println(f.getPath());
         f.delete();
+        mitarbeiter[delete] = null;
+        mitarbeiterCount -= 1;
         saveall();
         loadall();
     }//GEN-LAST:event_mitDeleteActionPerformed
@@ -311,9 +312,6 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
           
-        model.setRowCount(0);
-        
-        loadall();
           
       }
         
@@ -328,18 +326,35 @@ public class personalGUI extends javax.swing.JFrame {
     JFileChooser fChooser = new JFileChooser();
     
     private void saveall() {
+        
+        PrintWriter writer = null;
         try {
             
-            for (int i = 0; i < mitarbeiterCount; i++) {
-                
-                JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
-                Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            writer = new PrintWriter(xmlfolder + "settings.cfg");
+            writer.print("workercount: " + mitarbeiterCount);
             
-                jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + mitarbeiter[i].getPersonalNumber() + ".xml"));
-                System.out.println("Mitarbeiter " + mitarbeiter[i].getName() + " gespeichert"); 
-                
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            writer.close();
+        }
+        
+        try {
+            int max = mitarbeiterCount;
+            
+            for (int i = 0; i < max; i++) {
+                if (mitarbeiter[i] != null) {
+                    JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
+                    Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+                    jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+                    jaxbMarshaller.marshal(mitarbeiter[i], new File(xmlfolder + "mitarbeiter" + mitarbeiter[i].getPersonalNumber() + ".xml"));
+                    System.out.println("Mitarbeiter " + mitarbeiter[i].getName() + " gespeichert"); 
+                }
+                else {
+                    max += 1;
+                }
             }
 
         } catch (JAXBException ex) {
@@ -398,7 +413,16 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
          
-         int mID = 1000 + mitarbeiterCount;
+          int mID;
+          
+          for (int i = 0; true; i++) {
+              if (mitarbeiter[i] != null && mitarbeiter[i].getPersonalNumber() != 1000 + i) {
+                  mID = 1000 + i;
+                  break;
+              }
+          }
+          
+         
          
           if (salary != 0) {
               
@@ -418,24 +442,14 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void closeMe(){
         
-        PrintWriter writer = null;
-        try {
-            
-            writer = new PrintWriter(xmlfolder + "settings.cfg");
-            writer.print("workercount: " + mitarbeiterCount);
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            writer.close();
-            System.exit(0);
-        }
-        
         saveall();
+        System.exit(0);
 
     }
     
     public void loadall(){
+        
+        model.setRowCount(0);
         
         File config = new File(xmlfolder + "settings.cfg");
         
