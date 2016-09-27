@@ -319,7 +319,40 @@ public class personalGUI extends javax.swing.JFrame {
 
     private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
         
-        
+      JTextField dbHostField = new JTextField(5);
+      JTextField dbNameField = new JTextField(5);
+      JTextField dbPortField = new JTextField(5);
+      JTextField dbUserField = new JTextField(5);
+      JTextField dbPassField = new JTextField(5);
+
+      JPanel dbInfo = new JPanel();
+      dbInfo.add(new JLabel("Host"));
+      dbInfo.add(dbHostField);
+      dbInfo.add(Box.createHorizontalStrut(10));
+      dbInfo.add(new JLabel("DB-Name"));
+      dbInfo.add(dbNameField);
+      dbInfo.add(Box.createHorizontalStrut(10));
+      dbInfo.add(new JLabel("Port"));
+      dbInfo.add(dbPortField);
+      dbPortField.setText("3306");
+      dbInfo.add(new JLabel("User"));
+      dbInfo.add(dbUserField);
+      dbInfo.add(Box.createHorizontalStrut(10));
+      dbInfo.add(new JLabel("Password"));
+      dbInfo.add(dbPassField);
+
+      int result = JOptionPane.showConfirmDialog(null, dbInfo, 
+               "Datenbank informationen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      
+      if (result == JOptionPane.OK_OPTION) {
+          
+         System.out.println("Host: " + dbHostField.getText());
+         System.out.println("Name: " + dbNameField.getText());
+         System.out.println("Port: " + dbPortField.getText());
+         System.out.println("User: " + dbUserField.getText());
+         System.out.println("Password: " + dbPassField.getText());
+         
+      }
         
     }//GEN-LAST:event_mitDBActionPerformed
 
