@@ -363,6 +363,8 @@ public class personalGUI extends javax.swing.JFrame {
          
          Connection conn = null;
          
+         // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
+         
          try {
  
             Class.forName("com.mysql.jdbc.Driver");
