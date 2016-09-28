@@ -11,14 +11,21 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -192,11 +199,11 @@ public class personalGUI extends javax.swing.JFrame {
     Mitarbeiter[] mitarbeiter = new Mitarbeiter[8999];
     int mitarbeiterCount = 0;
     
-    String appdata = System.getenv("APPDATA");
+    String documents = System.getProperty("user.home")+"/Documents";
         
         boolean success;
             
-        String xmlfolder = appdata + "/PersonalManager/";
+        String xmlfolder = documents + "/PersonalManager/";
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tabPersonal.setModel(model);
@@ -205,7 +212,7 @@ public class personalGUI extends javax.swing.JFrame {
         model.addColumn("Gehalt");
         model.addColumn("Zeit gearbeitet");
 
-        success = (new File(appdata + "/PersonalManager")).mkdirs();
+        success = (new File(documents + "/PersonalManager")).mkdirs();
         
         if (!success) {
                 
@@ -213,8 +220,36 @@ public class personalGUI extends javax.swing.JFrame {
                 
         }else{
                 
-            System.out.println("Folder created (" + xmlfolder + ")");
+                System.out.println("Folder created (" + xmlfolder + ")");
                 
+                }
+        
+        File f = new File(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+        if(!f.exists() && !f.isDirectory()) { 
+            
+            try {
+                
+                System.out.println("Versuche MySQL-Treiber herunterzuladen.");
+                
+                URL website = new URL("http://dunkel.darkdl.de/mysql-connector-java-5.1.39-bin.jar");
+                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+                FileOutputStream fos = new FileOutputStream(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                
+                System.out.println("MySQL-Treiber erfolgreich heruntergeladen.");
+                
+                restartApplication();
+                
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }catch(FileNotFoundException ex){  
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch(Exception ex){
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);  
+            }
+            
         }
         
         loadall();
@@ -688,6 +723,32 @@ public class personalGUI extends javax.swing.JFrame {
         
         
         
+    }
+    
+    public void restartApplication(){
+        
+        try {
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            System.out.println(currentJar);
+            
+            /* is it a jar file? */
+            if(!currentJar.getName().endsWith(".jar"))
+                return;
+            
+            /* Build command: java -jar application.jar */
+            final ArrayList<String> command = new ArrayList<String>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+            
+            final ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+            System.exit(0);
+            
+        } catch (URISyntaxException | IOException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void main(String[] args) {
