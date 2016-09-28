@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -347,6 +348,8 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitEditActionPerformed
 
+    private static Connection conn;
+    
     private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
         
       JTextField dbHostField = new JTextField(5);
@@ -387,8 +390,6 @@ public class personalGUI extends javax.swing.JFrame {
          System.out.println("Password: *****");
          String dbPassword = dbPassField.getText();
          
-         Connection conn = null;
-         
          // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
          
          try {
@@ -402,6 +403,27 @@ public class personalGUI extends javax.swing.JFrame {
                     + "password=" + dbPassword);
             
             JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
+            mitDBSave.setEnabled(true);
+            mitDBLoad.setEnabled(true);
+            
+            Statement query;
+            try {
+            query = conn.createStatement();
+
+            String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Nachname TEXT, Vorname TEXT," +
+            " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";        
+            
+            query.executeUpdate(sql);
+
+            }catch(SQLException e){
+                
+                e.printStackTrace();
+                
+            }catch(Exception e){
+                
+                e.printStackTrace();
+                
+            }
 
          } catch (ClassNotFoundException e) {
             
@@ -421,11 +443,15 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitDBActionPerformed
 
     private void mitDBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBSaveActionPerformed
-        // TODO add your handling code here:
+               
+        saveAllDB();
+        
     }//GEN-LAST:event_mitDBSaveActionPerformed
 
     private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
-        // TODO add your handling code here:
+        
+        loadAllDB();
+        
     }//GEN-LAST:event_mitDBLoadActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
@@ -465,6 +491,12 @@ public class personalGUI extends javax.swing.JFrame {
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+    }
+    
+    private void saveAllDB(){
+        
+        
         
     }
 
@@ -642,6 +674,12 @@ public class personalGUI extends javax.swing.JFrame {
         File x = new File(xmlfolder);
 
         mitarbeiterCount = workerCount;
+        
+    }
+    
+    private void loadAllDB(){
+        
+        
         
     }
     
