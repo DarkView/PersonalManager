@@ -15,6 +15,9 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -22,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.bind.JAXBContext;
@@ -323,7 +327,7 @@ public class personalGUI extends javax.swing.JFrame {
       JTextField dbNameField = new JTextField(5);
       JTextField dbPortField = new JTextField(5);
       JTextField dbUserField = new JTextField(5);
-      JTextField dbPassField = new JTextField(5);
+      JTextField dbPassField = new JPasswordField(5);
 
       JPanel dbInfo = new JPanel();
       dbInfo.add(new JLabel("Host"));
@@ -347,11 +351,43 @@ public class personalGUI extends javax.swing.JFrame {
       if (result == JOptionPane.OK_OPTION) {
           
          System.out.println("Host: " + dbHostField.getText());
+         String dbHost = dbHostField.getText();
          System.out.println("Name: " + dbNameField.getText());
+         String dbName = dbNameField.getText();
          System.out.println("Port: " + dbPortField.getText());
+         String dbPort = dbPortField.getText();
          System.out.println("User: " + dbUserField.getText());
-         System.out.println("Password: " + dbPassField.getText());
+         String dbUser = dbUserField.getText();
+         System.out.println("Password: *****");
+         String dbPassword = dbPassField.getText();
          
+         Connection conn = null;
+         
+         try {
+ 
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            JOptionPane.showMessageDialog(null, "Versuche zu verbinden\nDies kann einige Zeit in Anspruch nehmen\nBitte warten...", "", JOptionPane.INFORMATION_MESSAGE);
+            
+            conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
+                    + dbPort + "/" + dbName + "?" + "user=" + dbUser + "&"
+                    + "password=" + dbPassword);
+            
+            JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
+
+         } catch (ClassNotFoundException e) {
+            
+            JOptionPane.showMessageDialog(null, "Konnte Treiber nicht finden", "Fehler!", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Treiber nicht gefunden");
+            
+         } catch (SQLException e) {
+             
+             JOptionPane.showMessageDialog(null, "Verbinden nicht möglich", "Fehler!", JOptionPane.ERROR_MESSAGE);
+             System.out.println("Connect nicht moeglich");
+             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
+             
+        }
+
       }
         
     }//GEN-LAST:event_mitDBActionPerformed
