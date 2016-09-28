@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -520,17 +521,11 @@ public class personalGUI extends javax.swing.JFrame {
           int mID = 0;
           int saveIn;
           int[] arr = getListOfUsedIDs();
-          boolean c = false;
+          Arrays.sort(arr);
           
-          for (int i = 0; i < mitarbeiterCount; i++) {
-              for (int b = 0; b < arr.length; b++) {
-                  if(arr[b] != 1000+i) {
-                      mID = 1000+i;
-                      c = true;
-                      break;
-                  }
-              }
-              if(c) {
+          for (int i = 0; true; i++) {
+              if(Arrays.binarySearch(arr, 1000+i) < 0) {
+                  mID = 1000+i;
                   break;
               }
           }
