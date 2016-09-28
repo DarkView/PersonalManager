@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  *
- * @authors Dunkel, DunklerHeld
+ * @author Dunkel, DunklerHeld
  */
 @XmlRootElement(name="MITARBEITER")
 @XmlType(propOrder={"mname", "mpersonalNumber", "msalary", "mtime"})
