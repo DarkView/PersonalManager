@@ -66,7 +66,10 @@ public class personalGUI extends javax.swing.JFrame {
         mitSave = new javax.swing.JMenuItem();
         mitReload = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        mnuDB = new javax.swing.JMenu();
         mitDB = new javax.swing.JMenuItem();
+        mitDBSave = new javax.swing.JMenuItem();
+        mitDBLoad = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
@@ -134,13 +137,35 @@ public class personalGUI extends javax.swing.JFrame {
         mnuOptions.add(mitReload);
         mnuOptions.add(jSeparator1);
 
+        mnuDB.setText("Datenbank");
+
         mitDB.setText("Mit Datenbank verbinden");
         mitDB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mitDBActionPerformed(evt);
             }
         });
-        mnuOptions.add(mitDB);
+        mnuDB.add(mitDB);
+
+        mitDBSave.setText("In Datenbank abspeichern");
+        mitDBSave.setEnabled(false);
+        mitDBSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitDBSaveActionPerformed(evt);
+            }
+        });
+        mnuDB.add(mitDBSave);
+
+        mitDBLoad.setText("Aus Datenbank auslesen");
+        mitDBLoad.setEnabled(false);
+        mitDBLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitDBLoadActionPerformed(evt);
+            }
+        });
+        mnuDB.add(mitDBLoad);
+
+        mnuOptions.add(mnuDB);
 
         jMenuBar1.add(mnuOptions);
 
@@ -394,6 +419,14 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitDBActionPerformed
 
+    private void mitDBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBSaveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mitDBSaveActionPerformed
+
+    private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mitDBLoadActionPerformed
+
     JFileChooser fChooser = new JFileChooser();
     
     private void saveall() {
@@ -487,13 +520,18 @@ public class personalGUI extends javax.swing.JFrame {
           int mID = 0;
           int saveIn;
           int[] arr = getListOfUsedIDs();
+          boolean c = false;
           
           for (int i = 0; i < mitarbeiterCount; i++) {
               for (int b = 0; b < arr.length; b++) {
                   if(arr[b] != 1000+i) {
                       mID = 1000+i;
+                      c = true;
                       break;
                   }
+              }
+              if(c) {
+                  break;
               }
           }
           
@@ -693,11 +731,14 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JMenuItem mitDB;
+    private javax.swing.JMenuItem mitDBLoad;
+    private javax.swing.JMenuItem mitDBSave;
     private javax.swing.JMenuItem mitDelete;
     private javax.swing.JMenuItem mitEdit;
     private javax.swing.JMenuItem mitNewMitarbeiter;
     private javax.swing.JMenuItem mitReload;
     private javax.swing.JMenuItem mitSave;
+    private javax.swing.JMenu mnuDB;
     private javax.swing.JMenu mnuOptions;
     private javax.swing.JTable tabPersonal;
     // End of variables declaration//GEN-END:variables
