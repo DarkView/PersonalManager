@@ -484,11 +484,22 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
          
-          int mID;
+          int mID = 0;
+          int saveIn;
+          int[] arr = getListOfUsedIDs();
+          
+          for (int i = 0; i < mitarbeiterCount; i++) {
+              for (int b = 0; b < arr.length; b++) {
+                  if(arr[b] != 1000+i) {
+                      mID = 1000+i;
+                      break;
+                  }
+              }
+          }
           
           for (int i = 0; true; i++) {
-              if (mitarbeiter[i] != null && mitarbeiter[i].getPersonalNumber() != 1000 + i) {
-                  mID = 1000 + i;
+              if (mitarbeiter[i] == null) {
+                  saveIn = i;
                   break;
               }
           }
@@ -497,8 +508,8 @@ public class personalGUI extends javax.swing.JFrame {
          
           if (salary != 0) {
               
-              mitarbeiter[mitarbeiterCount] = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
-              insertMitarbeiter(mitarbeiter[mitarbeiterCount]);
+              mitarbeiter[saveIn] = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
+              insertMitarbeiter(mitarbeiter[saveIn]);
               mitarbeiterCount++;
               
           }else{
@@ -509,6 +520,20 @@ public class personalGUI extends javax.swing.JFrame {
           }
          
     }
+    }
+    
+    private int[] getListOfUsedIDs() {
+        int[] ret = new int[mitarbeiter.length];
+        int stelle = 0;
+        
+        for (int i = 0; i < ret.length; i++) {
+            if(mitarbeiter[i] != null) {
+                ret[stelle] = mitarbeiter[i].getPersonalNumber();
+                stelle++;
+            }
+        }
+        
+        return ret;
     }
     
     private void closeMe(){
