@@ -258,6 +258,7 @@ public class personalGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mitReloadActionPerformed
 
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
+        
         int delete = tabPersonal.getSelectedRow();
         Mitarbeiter m = mitarbeiter[delete];
         System.out.println(m.getName());
@@ -269,6 +270,7 @@ public class personalGUI extends javax.swing.JFrame {
         mitarbeiterCount -= 1;
         saveall();
         loadall();
+        
     }//GEN-LAST:event_mitDeleteActionPerformed
 
     private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
@@ -379,6 +381,7 @@ public class personalGUI extends javax.swing.JFrame {
       
       if (result == JOptionPane.OK_OPTION) {
           
+          System.out.println("--- Datenbank Start---\n");
          System.out.println("Host: " + dbHostField.getText());
          String dbHost = dbHostField.getText();
          System.out.println("Name: " + dbNameField.getText());
@@ -389,6 +392,7 @@ public class personalGUI extends javax.swing.JFrame {
          String dbUser = dbUserField.getText();
          System.out.println("Password: *****");
          String dbPassword = dbPassField.getText();
+          System.out.println("\n--- Datenbank Ende---\n");
          
          // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
          
@@ -473,6 +477,8 @@ public class personalGUI extends javax.swing.JFrame {
         try {
             int max = mitarbeiterCount;
             
+            System.out.println("--- Speichern Start ---\n");
+            
             for (int i = 0; i < max; i++) {
                 if (mitarbeiter[i] != null) {
                     JAXBContext jaxbContext = JAXBContext.newInstance(Mitarbeiter.class);
@@ -488,6 +494,8 @@ public class personalGUI extends javax.swing.JFrame {
                 }
             }
 
+            System.out.println("\n--- Speichern Ende ---\n");
+            
         } catch (JAXBException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -533,9 +541,11 @@ public class personalGUI extends javax.swing.JFrame {
       
       if (result == JOptionPane.OK_OPTION) {
           
+          System.out.println("--- Neuer Mitarbeiter Start ---\n");
          System.out.println("Vorname: " + firstNameField.getText());
          System.out.println("Nachname: " + lastNameField.getText());
          System.out.println("Gehalt: " + salaryField.getText());
+          System.out.println("\n--- Neuer Mitarbeiter Ende ---\n");
          
          double salary = 0;
          
