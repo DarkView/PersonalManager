@@ -99,6 +99,17 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mitDBLoadActionPerformed"/>
                   </Events>
                 </MenuItem>
+                <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mitDBClose">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Verbindung trennen"/>
+                    <Property name="enabled" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mitDBCloseActionPerformed"/>
+                  </Events>
+                </MenuItem>
               </SubComponents>
             </Menu>
           </SubComponents>

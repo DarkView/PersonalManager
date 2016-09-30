@@ -74,6 +74,8 @@ public class personalGUI extends javax.swing.JFrame {
         mitDB = new javax.swing.JMenuItem();
         mitDBSave = new javax.swing.JMenuItem();
         mitDBLoad = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        mitDBClose = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mitarbeiter");
@@ -168,6 +170,16 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuDB.add(mitDBLoad);
+        mnuDB.add(jSeparator3);
+
+        mitDBClose.setText("Verbindung trennen");
+        mitDBClose.setEnabled(false);
+        mitDBClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mitDBCloseActionPerformed(evt);
+            }
+        });
+        mnuDB.add(mitDBClose);
 
         mnuOptions.add(mnuDB);
 
@@ -431,6 +443,8 @@ public class personalGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
             mitDBSave.setEnabled(true);
             mitDBLoad.setEnabled(true);
+            mitDB.setEnabled(false);
+            mitDBClose.setEnabled(true);
             
             Statement query;
             try {
@@ -479,6 +493,21 @@ public class personalGUI extends javax.swing.JFrame {
         loadAllDB();
         
     }//GEN-LAST:event_mitDBLoadActionPerformed
+
+    private void mitDBCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBCloseActionPerformed
+        
+        try {
+            conn.close();
+            mitDB.setEnabled(true);
+            mitDBClose.setEnabled(false);
+            mitDBSave.setEnabled(false);
+            mitDBLoad.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_mitDBCloseActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
@@ -821,7 +850,9 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem mitDB;
+    private javax.swing.JMenuItem mitDBClose;
     private javax.swing.JMenuItem mitDBLoad;
     private javax.swing.JMenuItem mitDBSave;
     private javax.swing.JMenuItem mitDelete;
