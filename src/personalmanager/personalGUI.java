@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -240,17 +241,11 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 restartApplication();
                 
-            } catch (MalformedURLException ex) {
+            }catch(Exception ex){
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }catch(FileNotFoundException ex){  
-                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch(Exception ex){
-                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);  
+                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
+                mnuDB.setEnabled(false);
             }
-            
-        }
         
         loadall();
         
@@ -265,7 +260,8 @@ public class personalGUI extends javax.swing.JFrame {
     };
         
     this.addWindowListener(exitListener);
-        
+      
+        }
     }//GEN-LAST:event_formWindowOpened
 
     private void mitNewMitarbeiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNewMitarbeiterActionPerformed
