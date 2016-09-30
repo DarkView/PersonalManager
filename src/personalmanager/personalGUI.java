@@ -61,6 +61,10 @@ public class personalGUI extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tabPersonal = new javax.swing.JTable();
+        pnlControls = new javax.swing.JPanel();
+        cmdCreateWorker = new javax.swing.JButton();
+        cmdDeleteWorker = new javax.swing.JButton();
+        cmdEditWorker = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuOptions = new javax.swing.JMenu();
         mitNewMitarbeiter = new javax.swing.JMenuItem();
@@ -93,6 +97,53 @@ public class personalGUI extends javax.swing.JFrame {
         tabPersonal.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tabPersonal.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tabPersonal);
+
+        pnlControls.setBorder(javax.swing.BorderFactory.createTitledBorder("Control Panel"));
+
+        cmdCreateWorker.setText("Mitarbeiter hinzufügen");
+        cmdCreateWorker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdCreateWorkerActionPerformed(evt);
+            }
+        });
+
+        cmdDeleteWorker.setText("Mitarbeiter löschen");
+        cmdDeleteWorker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdDeleteWorkerActionPerformed(evt);
+            }
+        });
+
+        cmdEditWorker.setText("Mitarbeiter bearbeiten");
+        cmdEditWorker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdEditWorkerActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlControlsLayout = new javax.swing.GroupLayout(pnlControls);
+        pnlControls.setLayout(pnlControlsLayout);
+        pnlControlsLayout.setHorizontalGroup(
+            pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmdCreateWorker)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmdEditWorker)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmdDeleteWorker)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlControlsLayout.setVerticalGroup(
+            pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlControlsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlControlsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdCreateWorker)
+                    .addComponent(cmdDeleteWorker)
+                    .addComponent(cmdEditWorker))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         mnuOptions.setText("Optionen");
 
@@ -192,10 +243,18 @@ public class personalGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlControls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleName("MitarbeiterForm");
@@ -296,94 +355,13 @@ public class personalGUI extends javax.swing.JFrame {
 
     private void mitDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDeleteActionPerformed
         
-        int delete = tabPersonal.getSelectedRow();
-        Mitarbeiter m = mitarbeiter[delete];
-        System.out.println(m.getName());
-        System.out.println(m.getPersonalNumber());
-        File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
-        System.out.println(f.getPath());
-        f.delete();
-        mitarbeiter[delete] = null;
-        mitarbeiterCount -= 1;
-        saveall();
-        loadall();
+        deleteWorker();
         
     }//GEN-LAST:event_mitDeleteActionPerformed
 
     private void mitEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitEditActionPerformed
         
-      JTextField idField = new JTextField(5);
-      
-      JPanel editWorker = new JPanel();
-      editWorker.add(new JLabel("Mitarbeiter-ID:"));
-      editWorker.add(idField);
-
-      int result = JOptionPane.showConfirmDialog(null, editWorker, 
-               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      
-      Mitarbeiter mit = null;
-      boolean mitFound = false;
-      
-      if (result == JOptionPane.OK_OPTION) {
-          
-          int searchID = Integer.parseInt(idField.getText().trim());
-          int toEditID = searchID - 1000;
-          int mitNummer = 0;
-          
-          try{
-          
-          for (int i = 0; i <= toEditID; i++) {
-              
-              if (mitarbeiter[i].getPersonalNumber() == searchID) {
-                  
-                  mit = mitarbeiter[i];
-                  mitNummer = i;
-                  i = toEditID;
-                  mitFound = true;
-              
-              }
-          }
-          
-          }catch(Exception ex){
-              
-              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
-              
-          }
-    
-          if (mitFound == true) {
-      
-            JTextField nameField = new JTextField(15);
-            JTextField salaryField = new JTextField(5);
-
-            JPanel toEditWorker = new JPanel();
-            toEditWorker.add(new JLabel("Vorname:"));
-            toEditWorker.add(nameField);
-            toEditWorker.add(Box.createHorizontalStrut(10));
-            toEditWorker.add(new JLabel("Gehalt:"));
-            toEditWorker.add(salaryField);
-            
-            nameField.setText(mit.getName());
-            salaryField.setText(Double.toString(mit.getSalary()) + "€");
-                  
-            int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
-               "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            
-              if (resultEdit == JOptionPane.OK_OPTION) {
-                  
-                  mitarbeiter[mitNummer].setName(nameField.getText());
-                  mitarbeiter[mitNummer].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
-                  saveall();
-                  
-              }
-      
-          }else{
-              
-              JOptionPane.showMessageDialog(null, "Mitarbeiter mit der ID #" + searchID + " konnte nicht gefunden werden!", "Fehler", JOptionPane.OK_OPTION);
-              
-          }
-          
-          
-      }
+      editWorker();
         
     }//GEN-LAST:event_mitEditActionPerformed
 
@@ -509,7 +487,116 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitDBCloseActionPerformed
 
+    private void cmdDeleteWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDeleteWorkerActionPerformed
+        deleteWorker();
+    }//GEN-LAST:event_cmdDeleteWorkerActionPerformed
+
+    private void cmdCreateWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCreateWorkerActionPerformed
+        getNewWorkerInfo();
+    }//GEN-LAST:event_cmdCreateWorkerActionPerformed
+
+    private void cmdEditWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditWorkerActionPerformed
+        editWorker();
+    }//GEN-LAST:event_cmdEditWorkerActionPerformed
+
     JFileChooser fChooser = new JFileChooser();
+    
+    private void deleteWorker() {
+        
+        
+        if(tabPersonal.getSelectedRow() != -1) {
+            int delete = tabPersonal.getSelectedRow();
+            Mitarbeiter m = mitarbeiter[delete];
+            System.out.println(m.getName());
+            System.out.println(m.getPersonalNumber());
+            File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+            System.out.println(f.getPath());
+            f.delete();
+            mitarbeiter[delete] = null;
+            mitarbeiterCount -= 1;
+            saveall();
+            loadall();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Bitte Mitarbeiter auswählen", "Fehler beim Löschen", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void editWorker() {
+        
+        JTextField idField = new JTextField(5);
+      
+      JPanel editWorker = new JPanel();
+      editWorker.add(new JLabel("Mitarbeiter-ID:"));
+      editWorker.add(idField);
+
+      int result = JOptionPane.showConfirmDialog(null, editWorker, 
+               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      
+      Mitarbeiter mit = null;
+      boolean mitFound = false;
+      
+      if (result == JOptionPane.OK_OPTION) {
+          
+          int searchID = Integer.parseInt(idField.getText().trim());
+          int toEditID = searchID - 1000;
+          int mitNummer = 0;
+          
+          try{
+          
+          for (int i = 0; i <= toEditID; i++) {
+              
+              if (mitarbeiter[i].getPersonalNumber() == searchID) {
+                  
+                  mit = mitarbeiter[i];
+                  mitNummer = i;
+                  i = toEditID;
+                  mitFound = true;
+              
+              }
+          }
+          
+          }catch(Exception ex){
+              
+              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
+              
+          }
+    
+          if (mitFound == true) {
+      
+            JTextField nameField = new JTextField(15);
+            JTextField salaryField = new JTextField(5);
+
+            JPanel toEditWorker = new JPanel();
+            toEditWorker.add(new JLabel("Vorname:"));
+            toEditWorker.add(nameField);
+            toEditWorker.add(Box.createHorizontalStrut(10));
+            toEditWorker.add(new JLabel("Gehalt:"));
+            toEditWorker.add(salaryField);
+            
+            nameField.setText(mit.getName());
+            salaryField.setText(Double.toString(mit.getSalary()) + "€");
+                  
+            int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
+               "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            
+              if (resultEdit == JOptionPane.OK_OPTION) {
+                  
+                  mitarbeiter[mitNummer].setName(nameField.getText());
+                  mitarbeiter[mitNummer].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
+                  saveall();
+                  loadall();
+                  
+              }
+      
+          }else{
+              
+              JOptionPane.showMessageDialog(null, "Mitarbeiter mit der ID #" + searchID + " konnte nicht gefunden werden!", "Fehler", JOptionPane.OK_OPTION);
+              
+          }
+          
+      }
+    }
     
     private void saveall() {
         
@@ -846,6 +933,9 @@ public class personalGUI extends javax.swing.JFrame {
             }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cmdCreateWorker;
+    private javax.swing.JButton cmdDeleteWorker;
+    private javax.swing.JButton cmdEditWorker;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -862,6 +952,7 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitSave;
     private javax.swing.JMenu mnuDB;
     private javax.swing.JMenu mnuOptions;
+    private javax.swing.JPanel pnlControls;
     private javax.swing.JTable tabPersonal;
     // End of variables declaration//GEN-END:variables
 }
