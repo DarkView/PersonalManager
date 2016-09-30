@@ -11,17 +11,11 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -44,7 +38,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 /**
- *
+ * @version 1.0
  * @author Dunkel, DunklerHeld
  */
 public class personalGUI extends javax.swing.JFrame {
@@ -225,27 +219,28 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 }
         
-        File f = new File(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
-        if(!f.exists() && !f.isDirectory()) { 
-            
-            try {
-                
-                System.out.println("Versuche MySQL-Treiber herunterzuladen.");
-                
-                URL website = new URL("http://dunkel.darkdl.de/mysql-connector-java-5.1.39-bin.jar");
-                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                FileOutputStream fos = new FileOutputStream(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                
-                System.out.println("MySQL-Treiber erfolgreich heruntergeladen.");
-                
-                restartApplication();
-                
-            }catch(Exception ex){
-                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
-                mnuDB.setEnabled(false);
-            }
+//        File f = new File(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+//        if(!f.exists() && !f.isDirectory()) { 
+//            
+//            try {
+//                
+//                System.out.println("Versuche MySQL-Treiber herunterzuladen.");
+//                
+//                URL website = new URL("http://dunkel.darkdl.de/mysql-connector-java-5.1.39-bin.jar");
+//                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+//                FileOutputStream fos = new FileOutputStream(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+//                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+//                
+//                System.out.println("MySQL-Treiber erfolgreich heruntergeladen.");
+//                
+//                restartApplication();
+//                
+//            }catch(Exception ex){
+//                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+//                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
+//                mnuDB.setEnabled(false);
+//            }
+//        }
         
         loadall();
         
@@ -261,7 +256,6 @@ public class personalGUI extends javax.swing.JFrame {
         
     this.addWindowListener(exitListener);
       
-        }
     }//GEN-LAST:event_formWindowOpened
 
     private void mitNewMitarbeiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitNewMitarbeiterActionPerformed
