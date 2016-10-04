@@ -606,45 +606,7 @@ public class personalGUI extends javax.swing.JFrame {
                 }
             }
         }
-        
-//      JTextField idField = new JTextField(5);
-//      
-//      JPanel editWorker = new JPanel();
-//      editWorker.add(new JLabel("Mitarbeiter-ID:"));
-//      editWorker.add(idField);
-//
-//      int result = JOptionPane.showConfirmDialog(null, editWorker, 
-//               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-//      
-//      Mitarbeiter mit = null;
-//      boolean mitFound = false;
-//      
-//      if (result == JOptionPane.OK_OPTION) {
-//          
-//          int searchID = Integer.parseInt(idField.getText().trim());
-//          int toEditID = searchID - 1000;
-//          int mitNummer = 0;
-//          
-//          try{
-//          
-//          for (int i = 0; i <= toEditID; i++) {
-//              
-//              if (mitarbeiter[i].getPersonalNumber() == searchID) {
-//                  
-//                  mit = mitarbeiter[i];
-//                  mitNummer = i;
-//                  i = toEditID;
-//                  mitFound = true;
-//              
-//              }
-//          }
-//          
-//          }catch(Exception ex){
-//              
-//              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
-//              
-//          }
-    
+
         if(edit != -1) {
 
             if (toEdit != null) {
@@ -726,8 +688,28 @@ public class personalGUI extends javax.swing.JFrame {
     }
     
     private void saveAllDB(){
+            
+        int max = mitarbeiterCount;
         
-        
+        for (int i = 0; i < max; i++) {
+            
+            try {
+                
+                Mitarbeiter toSave = mitarbeiter[i];
+                
+                Statement query = conn.createStatement();
+                
+                String sql = "TRUNCATE Mitarbeiter";
+                
+                query.executeQuery(sql);
+                
+                // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
         
     }
 
@@ -1016,7 +998,45 @@ public class personalGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog (null, "Kann Daten nicht speichern!");
             }
             }*/
-
+        
+//      JTextField idField = new JTextField(5);
+//      
+//      JPanel editWorker = new JPanel();
+//      editWorker.add(new JLabel("Mitarbeiter-ID:"));
+//      editWorker.add(idField);
+//
+//      int result = JOptionPane.showConfirmDialog(null, editWorker, 
+//               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+//      
+//      Mitarbeiter mit = null;
+//      boolean mitFound = false;
+//      
+//      if (result == JOptionPane.OK_OPTION) {
+//          
+//          int searchID = Integer.parseInt(idField.getText().trim());
+//          int toEditID = searchID - 1000;
+//          int mitNummer = 0;
+//          
+//          try{
+//          
+//          for (int i = 0; i <= toEditID; i++) {
+//              
+//              if (mitarbeiter[i].getPersonalNumber() == searchID) {
+//                  
+//                  mit = mitarbeiter[i];
+//                  mitNummer = i;
+//                  i = toEditID;
+//                  mitFound = true;
+//              
+//              }
+//          }
+//          
+//          }catch(Exception ex){
+//              
+//              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
+//              
+//          }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCreateWorker;
     private javax.swing.JButton cmdDeleteWorker;
