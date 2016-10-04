@@ -193,6 +193,8 @@ public class personalGUI extends javax.swing.JFrame {
         mnuOptions.add(mitReload);
         mnuOptions.add(jSeparator1);
 
+        jMenuBar1.add(mnuOptions);
+
         mnuDB.setText("Datenbank");
 
         mitDB.setText("Mit Datenbank verbinden");
@@ -231,9 +233,7 @@ public class personalGUI extends javax.swing.JFrame {
         });
         mnuDB.add(mitDBClose);
 
-        mnuOptions.add(mnuDB);
-
-        jMenuBar1.add(mnuOptions);
+        jMenuBar1.add(mnuDB);
 
         setJMenuBar(jMenuBar1);
 
@@ -366,126 +366,6 @@ public class personalGUI extends javax.swing.JFrame {
 
     private static Connection conn;
     
-    private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
-        
-      JTextField dbHostField = new JTextField(7);
-      JTextField dbNameField = new JTextField(12);
-      JTextField dbPortField = new JTextField(5);
-      JTextField dbUserField = new JTextField(12);
-      JTextField dbPassField = new JPasswordField(10);
-
-      JPanel dbInfo = new JPanel();
-      dbInfo.add(new JLabel("Host"));
-      dbInfo.add(dbHostField);
-      dbInfo.add(new JLabel("DB-Name"));
-      dbInfo.add(dbNameField);
-      dbInfo.add(new JLabel("Port"));
-      dbInfo.add(dbPortField);
-      dbPortField.setText("3306");
-      dbInfo.add(new JLabel("User"));
-      dbInfo.add(dbUserField);
-      dbInfo.add(new JLabel("Password"));
-      dbInfo.add(dbPassField);
-
-      int result = JOptionPane.showConfirmDialog(null, dbInfo, 
-               "Datenbankinformationen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      
-      if (result == JOptionPane.OK_OPTION) {
-          
-          System.out.println("--- Datenbank Start---\n");
-         System.out.println("Host: " + dbHostField.getText());
-         String dbHost = dbHostField.getText();
-         System.out.println("Name: " + dbNameField.getText());
-         String dbName = dbNameField.getText();
-         System.out.println("Port: " + dbPortField.getText());
-         String dbPort = dbPortField.getText();
-         System.out.println("User: " + dbUserField.getText());
-         String dbUser = dbUserField.getText();
-         System.out.println("Password: *****");
-         String dbPassword = dbPassField.getText();
-          System.out.println("\n--- Datenbank Ende---\n");
-         
-         // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
-         
-         try {
- 
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            JOptionPane.showMessageDialog(null, "Versuche zu verbinden\nDies kann einige Zeit in Anspruch nehmen\nBitte warten...", "", JOptionPane.INFORMATION_MESSAGE);
-            
-            conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
-                    + dbPort + "/" + dbName + "?" + "user=" + dbUser + "&"
-                    + "password=" + dbPassword);
-            
-            JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
-            mitDBSave.setEnabled(true);
-            mitDBLoad.setEnabled(true);
-            mitDB.setEnabled(false);
-            mitDBClose.setEnabled(true);
-            
-            Statement query;
-            try {
-            query = conn.createStatement();
-
-            String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Nachname TEXT, Vorname TEXT," +
-            " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";        
-            
-            query.executeUpdate(sql);
-
-            }catch(SQLException e){
-                
-                e.printStackTrace();
-                
-            }catch(Exception e){
-                
-                e.printStackTrace();
-                
-            }
-
-         } catch (ClassNotFoundException e) {
-            
-            JOptionPane.showMessageDialog(null, "Konnte Treiber nicht finden", "Fehler!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Treiber nicht gefunden");
-            
-         } catch (SQLException e) {
-             
-             JOptionPane.showMessageDialog(null, "Verbinden nicht möglich", "Fehler!", JOptionPane.ERROR_MESSAGE);
-             System.out.println("Connect nicht moeglich");
-             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
-             
-        }
-
-      }
-        
-    }//GEN-LAST:event_mitDBActionPerformed
-
-    private void mitDBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBSaveActionPerformed
-               
-        saveAllDB();
-        
-    }//GEN-LAST:event_mitDBSaveActionPerformed
-
-    private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
-        
-        loadAllDB();
-        
-    }//GEN-LAST:event_mitDBLoadActionPerformed
-
-    private void mitDBCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBCloseActionPerformed
-        
-        try {
-            conn.close();
-            mitDB.setEnabled(true);
-            mitDBClose.setEnabled(false);
-            mitDBSave.setEnabled(false);
-            mitDBLoad.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
-        } catch (SQLException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_mitDBCloseActionPerformed
-
     private void cmdDeleteWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDeleteWorkerActionPerformed
         deleteWorker();
     }//GEN-LAST:event_cmdDeleteWorkerActionPerformed
@@ -497,6 +377,126 @@ public class personalGUI extends javax.swing.JFrame {
     private void cmdEditWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditWorkerActionPerformed
         editWorker();
     }//GEN-LAST:event_cmdEditWorkerActionPerformed
+
+    private void mitDBCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBCloseActionPerformed
+
+        try {
+            conn.close();
+            mitDB.setEnabled(true);
+            mitDBClose.setEnabled(false);
+            mitDBSave.setEnabled(false);
+            mitDBLoad.setEnabled(false);
+            JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_mitDBCloseActionPerformed
+
+    private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
+
+        loadAllDB();
+
+    }//GEN-LAST:event_mitDBLoadActionPerformed
+
+    private void mitDBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBSaveActionPerformed
+
+        saveAllDB();
+
+    }//GEN-LAST:event_mitDBSaveActionPerformed
+
+    private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
+
+        JTextField dbHostField = new JTextField(7);
+        JTextField dbNameField = new JTextField(12);
+        JTextField dbPortField = new JTextField(5);
+        JTextField dbUserField = new JTextField(12);
+        JTextField dbPassField = new JPasswordField(10);
+
+        JPanel dbInfo = new JPanel();
+        dbInfo.add(new JLabel("Host"));
+        dbInfo.add(dbHostField);
+        dbInfo.add(new JLabel("DB-Name"));
+        dbInfo.add(dbNameField);
+        dbInfo.add(new JLabel("Port"));
+        dbInfo.add(dbPortField);
+        dbPortField.setText("3306");
+        dbInfo.add(new JLabel("User"));
+        dbInfo.add(dbUserField);
+        dbInfo.add(new JLabel("Password"));
+        dbInfo.add(dbPassField);
+
+        int result = JOptionPane.showConfirmDialog(null, dbInfo,
+            "Datenbankinformationen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+
+            System.out.println("--- Datenbank Start---\n");
+            System.out.println("Host: " + dbHostField.getText());
+            String dbHost = dbHostField.getText();
+            System.out.println("Name: " + dbNameField.getText());
+            String dbName = dbNameField.getText();
+            System.out.println("Port: " + dbPortField.getText());
+            String dbPort = dbPortField.getText();
+            System.out.println("User: " + dbUserField.getText());
+            String dbUser = dbUserField.getText();
+            System.out.println("Password: *****");
+            String dbPassword = dbPassField.getText();
+            System.out.println("\n--- Datenbank Ende---\n");
+
+            // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
+
+            try {
+
+                Class.forName("com.mysql.jdbc.Driver");
+
+                JOptionPane.showMessageDialog(null, "Versuche zu verbinden\nDies kann einige Zeit in Anspruch nehmen\nBitte warten...", "", JOptionPane.INFORMATION_MESSAGE);
+
+                conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
+                    + dbPort + "/" + dbName + "?" + "user=" + dbUser + "&"
+                    + "password=" + dbPassword);
+
+                JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
+                mitDBSave.setEnabled(true);
+                mitDBLoad.setEnabled(true);
+                mitDB.setEnabled(false);
+                mitDBClose.setEnabled(true);
+
+                Statement query;
+                try {
+                    query = conn.createStatement();
+
+                    String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Nachname TEXT, Vorname TEXT," +
+                    " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";
+
+                    query.executeUpdate(sql);
+
+                }catch(SQLException e){
+
+                    e.printStackTrace();
+
+                }catch(Exception e){
+
+                    e.printStackTrace();
+
+                }
+
+            } catch (ClassNotFoundException e) {
+
+                JOptionPane.showMessageDialog(null, "Konnte Treiber nicht finden", "Fehler!", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Treiber nicht gefunden");
+
+            } catch (SQLException e) {
+
+                JOptionPane.showMessageDialog(null, "Verbinden nicht möglich", "Fehler!", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Connect nicht moeglich");
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
+
+            }
+
+        }
+
+    }//GEN-LAST:event_mitDBActionPerformed
 
     JFileChooser fChooser = new JFileChooser();
     
@@ -699,9 +699,11 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 Statement query = conn.createStatement();
                 
-                String sql = "TRUNCATE Mitarbeiter";
+                String sql = "DELETE FROM Mitarbeiter WHERE Mitarbeiter_ID >= 1000";
                 
-                query.executeQuery(sql);
+                query.executeUpdate(sql);
+                
+                
                 
                 // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
                 
