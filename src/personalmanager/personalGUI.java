@@ -464,8 +464,12 @@ public class personalGUI extends javax.swing.JFrame {
                 try {
                     query = conn.createStatement();
 
-                    String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Nachname TEXT, Vorname TEXT," +
+                    String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Name TEXT," +
                     " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";
+
+                    query.executeUpdate(sql);
+                    
+                    sql = "ALTER TABLE `Mitarbeiter` ADD UNIQUE (`Mitarbeiter_ID`)";
 
                     query.executeUpdate(sql);
 
