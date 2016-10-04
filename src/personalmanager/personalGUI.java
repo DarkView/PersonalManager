@@ -92,7 +92,6 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
 
-        tabPersonal.setAutoCreateRowSorter(true);
         tabPersonal.setModel(model);
         tabPersonal.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tabPersonal.getTableHeader().setReorderingAllowed(false);
@@ -508,6 +507,7 @@ public class personalGUI extends javax.swing.JFrame {
         
         if(tabPersonal.getSelectedRow() != -1) {
             delete = tabPersonal.getSelectedRow();
+            toDelete = mitarbeiter[delete];
             
         }
         else {
@@ -587,98 +587,101 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void editWorker() {
       
-        int edit;
-        Mitarbeiter toEdit;
+        int edit = -1;
+        Mitarbeiter toEdit = null;
         
         if(tabPersonal.getSelectedRow() != -1) {
             edit = tabPersonal.getSelectedRow();
+            toEdit = mitarbeiter[edit];
             
         }
         else {
-            toDelete = findMitarbeiterByID();
-            if(toDelete != null) {
+            toEdit = findMitarbeiterByID();
+            if(toEdit != null) {
                 for (int i = 0; i < mitarbeiter.length; i++) {
-                    if(mitarbeiter[i] == toDelete) {
-                        delete = i;
+                    if(mitarbeiter[i] == toEdit) {
+                        edit = i;
                         break;
                     }
                 }
             }
         }
         
-      JTextField idField = new JTextField(5);
-      
-      JPanel editWorker = new JPanel();
-      editWorker.add(new JLabel("Mitarbeiter-ID:"));
-      editWorker.add(idField);
-
-      int result = JOptionPane.showConfirmDialog(null, editWorker, 
-               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      
-      Mitarbeiter mit = null;
-      boolean mitFound = false;
-      
-      if (result == JOptionPane.OK_OPTION) {
-          
-          int searchID = Integer.parseInt(idField.getText().trim());
-          int toEditID = searchID - 1000;
-          int mitNummer = 0;
-          
-          try{
-          
-          for (int i = 0; i <= toEditID; i++) {
-              
-              if (mitarbeiter[i].getPersonalNumber() == searchID) {
-                  
-                  mit = mitarbeiter[i];
-                  mitNummer = i;
-                  i = toEditID;
-                  mitFound = true;
-              
-              }
-          }
-          
-          }catch(Exception ex){
-              
-              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
-              
-          }
+//      JTextField idField = new JTextField(5);
+//      
+//      JPanel editWorker = new JPanel();
+//      editWorker.add(new JLabel("Mitarbeiter-ID:"));
+//      editWorker.add(idField);
+//
+//      int result = JOptionPane.showConfirmDialog(null, editWorker, 
+//               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+//      
+//      Mitarbeiter mit = null;
+//      boolean mitFound = false;
+//      
+//      if (result == JOptionPane.OK_OPTION) {
+//          
+//          int searchID = Integer.parseInt(idField.getText().trim());
+//          int toEditID = searchID - 1000;
+//          int mitNummer = 0;
+//          
+//          try{
+//          
+//          for (int i = 0; i <= toEditID; i++) {
+//              
+//              if (mitarbeiter[i].getPersonalNumber() == searchID) {
+//                  
+//                  mit = mitarbeiter[i];
+//                  mitNummer = i;
+//                  i = toEditID;
+//                  mitFound = true;
+//              
+//              }
+//          }
+//          
+//          }catch(Exception ex){
+//              
+//              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
+//              
+//          }
     
-          if (mitFound) {
-      
-            JTextField nameField = new JTextField(15);
-            JTextField salaryField = new JTextField(5);
+        if(edit != -1) {
 
-            JPanel toEditWorker = new JPanel();
-            toEditWorker.add(new JLabel("Vorname:"));
-            toEditWorker.add(nameField);
-            toEditWorker.add(Box.createHorizontalStrut(10));
-            toEditWorker.add(new JLabel("Gehalt:"));
-            toEditWorker.add(salaryField);
-            
-            nameField.setText(mit.getName());
-            salaryField.setText(Double.toString(mit.getSalary()) + "€");
-                  
-            int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
-               "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            
-              if (resultEdit == JOptionPane.OK_OPTION) {
-                  
-                  mitarbeiter[mitNummer].setName(nameField.getText());
-                  mitarbeiter[mitNummer].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
-                  saveall();
-                  loadall();
-                  
-              }
-      
-          }else{
-              
-              JOptionPane.showMessageDialog(null, "Mitarbeiter mit der ID #" + searchID + " konnte nicht gefunden werden!", "Fehler", JOptionPane.OK_OPTION);
-              
-          }
-          
-      }
+            if (toEdit != null) {
+
+                JTextField nameField = new JTextField(15);
+                JTextField salaryField = new JTextField(5);
+
+                JPanel toEditWorker = new JPanel();
+                toEditWorker.add(new JLabel("Vorname:"));
+                toEditWorker.add(nameField);
+                toEditWorker.add(Box.createHorizontalStrut(10));
+                toEditWorker.add(new JLabel("Gehalt:"));
+                toEditWorker.add(salaryField);
+
+                nameField.setText(toEdit.getName());
+                salaryField.setText(Double.toString(toEdit.getSalary()) + "€");
+
+                int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
+                   "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                if (resultEdit == JOptionPane.OK_OPTION) {
+
+                    mitarbeiter[edit].setName(nameField.getText());
+                    mitarbeiter[edit].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
+                    saveall();
+                    loadall();
+
+                }
+
+            }
+        }else{
+
+                JOptionPane.showMessageDialog(null, "Mitarbeiter  konnte nicht gefunden werden!", "Fehler", JOptionPane.OK_OPTION);
+
+            }
     }
+    
     
     private void saveall() {
         
