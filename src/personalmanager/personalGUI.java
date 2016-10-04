@@ -70,15 +70,14 @@ public class personalGUI extends javax.swing.JFrame {
         mitNewMitarbeiter = new javax.swing.JMenuItem();
         mitEdit = new javax.swing.JMenuItem();
         mitDelete = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        mse1 = new javax.swing.JPopupMenu.Separator();
         mitSave = new javax.swing.JMenuItem();
         mitReload = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuDB = new javax.swing.JMenu();
         mitDB = new javax.swing.JMenuItem();
         mitDBSave = new javax.swing.JMenuItem();
         mitDBLoad = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        mse2 = new javax.swing.JPopupMenu.Separator();
         mitDBClose = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -172,7 +171,7 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuOptions.add(mitDelete);
-        mnuOptions.add(jSeparator2);
+        mnuOptions.add(mse1);
 
         mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
         mitSave.setText("Speichern");
@@ -191,7 +190,6 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuOptions.add(mitReload);
-        mnuOptions.add(jSeparator1);
 
         jMenuBar1.add(mnuOptions);
 
@@ -222,7 +220,7 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
         mnuDB.add(mitDBLoad);
-        mnuDB.add(jSeparator3);
+        mnuDB.add(mse2);
 
         mitDBClose.setText("Verbindung trennen");
         mitDBClose.setEnabled(false);
@@ -630,7 +628,7 @@ public class personalGUI extends javax.swing.JFrame {
                 if (resultEdit == JOptionPane.OK_OPTION) {
 
                     mitarbeiter[edit].setName(nameField.getText());
-                    mitarbeiter[edit].setSalary(Double.parseDouble(salaryField.getText().replace('€', ' ').trim()));
+                    mitarbeiter[edit].setSalary(Double.parseDouble(salaryField.getText().replace('€', '\0').replace(',', '.').trim()));
                     saveall();
                     loadall();
 
@@ -688,31 +686,49 @@ public class personalGUI extends javax.swing.JFrame {
     }
     
     private void saveAllDB(){
-            
+                     
         int max = mitarbeiterCount;
         
-        for (int i = 0; i < max; i++) {
+        Statement query = null;      
+        try {
+            query = conn.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+
+            String sql = "TRUNCATE Mitarbeiter";
             
-            try {
+            query.executeUpdate(sql);
+            
+            } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+            for (int i = 0; i < max; i++) {
                 
+            try {
                 Mitarbeiter toSave = mitarbeiter[i];
                 
-                Statement query = conn.createStatement();
-                
-                String sql = "DELETE FROM Mitarbeiter WHERE Mitarbeiter_ID >= 1000";
-                
-                query.executeUpdate(sql);
-                
-                
+                String Name = toSave.getName();
+                int Mitarbeiter_ID = toSave.getPersonalNumber();
+                double Gehalt = toSave.getSalary();
+                double Zeit_gearbeitet = toSave.getTime();
                 
                 // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
                 
+                String sql = "INSERT INTO Mitarbeiter(Name, Mitarbeiter_ID, Gehalt, Zeit_gearbeitet) VALUES ('" + Name + "','" + Mitarbeiter_ID + "','" + Gehalt + "','" + Zeit_gearbeitet + "')";
+                
+                query.executeUpdate(sql);
+                
             } catch (SQLException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }
-            
-        }
-        
+                
+            }
+
     }
 
     private DefaultTableModel model = new DefaultTableModel(0, 0) {
@@ -758,7 +774,7 @@ public class personalGUI extends javax.swing.JFrame {
          
           try {
               
-              salary = Double.parseDouble(salaryField.getText());
+              salary = Double.parseDouble(salaryField.getText().replace(',', '.').replace('€', '\0').trim());
               
           } catch (Exception e) {
               
@@ -900,31 +916,31 @@ public class personalGUI extends javax.swing.JFrame {
         
     }
     
-    public void restartApplication(){
-        
-        try {
-            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-            final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            System.out.println(currentJar);
-            
-            /* is it a jar file? */
-            if(!currentJar.getName().endsWith(".jar"))
-                return;
-            
-            /* Build command: java -jar application.jar */
-            final ArrayList<String> command = new ArrayList<String>();
-            command.add(javaBin);
-            command.add("-jar");
-            command.add(currentJar.getPath());
-            
-            final ProcessBuilder builder = new ProcessBuilder(command);
-            builder.start();
-            System.exit(0);
-            
-        } catch (URISyntaxException | IOException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public void restartApplication(){
+//        
+//        try {
+//            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+//            final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+//            System.out.println(currentJar);
+//            
+//            /* is it a jar file? */
+//            if(!currentJar.getName().endsWith(".jar"))
+//                return;
+//            
+//            /* Build command: java -jar application.jar */
+//            final ArrayList<String> command = new ArrayList<String>();
+//            command.add(javaBin);
+//            command.add("-jar");
+//            command.add(currentJar.getPath());
+//            
+//            final ProcessBuilder builder = new ProcessBuilder(command);
+//            builder.start();
+//            System.exit(0);
+//            
+//        } catch (URISyntaxException | IOException ex) {
+//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
@@ -1045,9 +1061,6 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JButton cmdEditWorker;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem mitDB;
     private javax.swing.JMenuItem mitDBClose;
     private javax.swing.JMenuItem mitDBLoad;
@@ -1059,6 +1072,8 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitSave;
     private javax.swing.JMenu mnuDB;
     private javax.swing.JMenu mnuOptions;
+    private javax.swing.JPopupMenu.Separator mse1;
+    private javax.swing.JPopupMenu.Separator mse2;
     private javax.swing.JPanel pnlControls;
     private javax.swing.JTable tabPersonal;
     // End of variables declaration//GEN-END:variables
