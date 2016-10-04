@@ -503,28 +503,110 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void deleteWorker() {
         
+        int delete = -1;
+        Mitarbeiter toDelete = null;
         
         if(tabPersonal.getSelectedRow() != -1) {
-            int delete = tabPersonal.getSelectedRow();
-            Mitarbeiter m = mitarbeiter[delete];
-            System.out.println(m.getName());
-            System.out.println(m.getPersonalNumber());
-            File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
-            System.out.println(f.getPath());
-            f.delete();
-            mitarbeiter[delete] = null;
-            mitarbeiterCount -= 1;
-            saveall();
-            loadall();
+            delete = tabPersonal.getSelectedRow();
+            
         }
         else {
-            JOptionPane.showMessageDialog(null, "Bitte Mitarbeiter auswählen", "Fehler beim Löschen", JOptionPane.ERROR_MESSAGE);
+            toDelete = findMitarbeiterByID();
+            if(toDelete != null) {
+                for (int i = 0; i < mitarbeiter.length; i++) {
+                    if(mitarbeiter[i] == toDelete) {
+                        delete = i;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(toDelete != null) {
+            try{
+                Mitarbeiter m = mitarbeiter[delete];
+                System.out.println(m.getName());
+                System.out.println(m.getPersonalNumber());
+                File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+                System.out.println(f.getPath());
+                f.delete();
+                mitarbeiter[delete] = null;
+                mitarbeiterCount -= 1;
+                saveall();
+                loadall();
+            }
+            catch(Exception x) {
+                JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     
-    private void editWorker() {
+    private Mitarbeiter findMitarbeiterByID() {
+        
+        Mitarbeiter mit;
         
         JTextField idField = new JTextField(5);
+      
+        JPanel editWorker = new JPanel();
+        editWorker.add(new JLabel("Mitarbeiter-ID:"));
+        editWorker.add(idField);
+
+        int result = JOptionPane.showConfirmDialog(null, editWorker, 
+               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      
+        mit = null;
+      
+        if (result == JOptionPane.OK_OPTION) {
+
+            int searchID = Integer.parseInt(idField.getText().trim());
+            int toEditID = searchID - 1000;
+
+            try{
+
+            for (int i = 0; i <= toEditID; i++) {
+
+                if (mitarbeiter[i].getPersonalNumber() == searchID) {
+
+                    mit = mitarbeiter[i];
+                    i = toEditID;
+                    break;
+
+                }
+            }
+
+            }catch(Exception ex){
+
+                System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
+
+            }
+
+        }
+
+        return mit;
+    }
+    
+    private void editWorker() {
+      
+        int edit;
+        Mitarbeiter toEdit;
+        
+        if(tabPersonal.getSelectedRow() != -1) {
+            edit = tabPersonal.getSelectedRow();
+            
+        }
+        else {
+            toDelete = findMitarbeiterByID();
+            if(toDelete != null) {
+                for (int i = 0; i < mitarbeiter.length; i++) {
+                    if(mitarbeiter[i] == toDelete) {
+                        delete = i;
+                        break;
+                    }
+                }
+            }
+        }
+        
+      JTextField idField = new JTextField(5);
       
       JPanel editWorker = new JPanel();
       editWorker.add(new JLabel("Mitarbeiter-ID:"));
@@ -562,7 +644,7 @@ public class personalGUI extends javax.swing.JFrame {
               
           }
     
-          if (mitFound == true) {
+          if (mitFound) {
       
             JTextField nameField = new JTextField(15);
             JTextField salaryField = new JTextField(5);
