@@ -8,20 +8,19 @@ package personalmanager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Box;
@@ -380,6 +379,12 @@ public class personalGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mitDBSaveActionPerformed
 
+    String dbHost = "";
+    String dbPort = "";
+    String dbName = "";
+    String dbUser = "";
+    String dbPassword = "";
+    
     private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
 
         JTextField dbHostField = new JTextField(7);
@@ -408,15 +413,15 @@ public class personalGUI extends javax.swing.JFrame {
 
             System.out.println("--- Datenbank Start---\n");
             System.out.println("Host: " + dbHostField.getText());
-            String dbHost = dbHostField.getText();
+            dbHost = dbHostField.getText();
             System.out.println("Name: " + dbNameField.getText());
-            String dbName = dbNameField.getText();
+            dbName = dbNameField.getText();
             System.out.println("Port: " + dbPortField.getText());
-            String dbPort = dbPortField.getText();
+            dbPort = dbPortField.getText();
             System.out.println("User: " + dbUserField.getText());
-            String dbUser = dbUserField.getText();
+            dbUser = dbUserField.getText();
             System.out.println("Password: *****");
-            String dbPassword = dbPassField.getText();
+            dbPassword = dbPassField.getText();
             System.out.println("\n--- Datenbank Ende---\n");
 
             // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
@@ -625,20 +630,76 @@ public class personalGUI extends javax.swing.JFrame {
             }
     }
     
+    String result = "";
+    InputStream inputStream;
+    String workercounts = "workercount";
+    String dbHosts = "dbHost";
+    String dbPorts = "dbPort";
+    String dbNames = "dbName";
+    String dbUsers = "dbUser";
     
     private void saveall() {
         
+        String propFileName = "settings.properties";
         PrintWriter writer = null;
+        
         try {
             
-            writer = new PrintWriter(xmlfolder + "settings.cfg");
-            writer.print("workercount: " + mitarbeiterCount);
+            writer = new PrintWriter(xmlfolder + propFileName);
             
+        }catch(Exception ex){ 
+        }
+        
+        Properties prop = new Properties();
+ 
+        try {
+            inputStream = new FileInputStream(xmlfolder + propFileName);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            writer.close();
         }
+                
+		if (inputStream != null) {
+                            
+            try {
+                
+                prop.load(inputStream);
+                prop.clear();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                            prop.setProperty(workercounts, String.valueOf(mitarbeiterCount));
+                            prop.setProperty(dbHosts, dbHost);
+                            prop.setProperty(dbPorts, dbPort);
+                            prop.setProperty(dbNames, dbName);
+                            prop.setProperty(dbUsers, dbUser);
+                            
+            try {
+                
+                prop.store(writer, "\nProperties-Datei des personalmanagers - NICHT LÖSCHEN!\n\n\n   ...Bitte\n");
+                
+            } catch (IOException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                
+                writer.close();
+                
+            }
+            
+        }
+
+        
+//        PrintWriter writer = null;
+//        try {
+//            
+//            writer = new PrintWriter(xmlfolder + "settings.properties");
+//            writer.print("workercount: " + mitarbeiterCount);
+//            
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            writer.close();
+//        }
         
         try {
             int max = mitarbeiterCount;
@@ -824,37 +885,37 @@ public class personalGUI extends javax.swing.JFrame {
 
     }
     
+    int iWorkercount = 0;
+    
     public void loadall(){
         
         model.setRowCount(0);
         
-        File config = new File(xmlfolder + "settings.properties");
+        String propFileName = "settings.properties";
+        PrintWriter writer = null;
         
-        String line = null;
-        int workerCount = 0;
+        Properties prop = new Properties();
+ 
         try {
-            BufferedReader dat = new BufferedReader(new FileReader(config));
-            line = dat.readLine();
-            dat.close();
+            inputStream = new FileInputStream(xmlfolder + propFileName);
         } catch (FileNotFoundException ex) {
-            System.out.println("Datei nicht gefunden. Werde keine daten einlesen.");
-        } catch (IOException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception x) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, x);
-            System.out.println("FEHLER! Erster Start?");
         }
-        
-        try{
-        
-        String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
-        workerCount = Integer.parseInt(linel);
-        
-        }catch(NullPointerException ex){
-            
-            System.out.println("Konnte workercount nicht auslesen!");
-            
-        }
+                System.out.println(inputStream);
+                
+		if (inputStream != null) {
+                            
+            try {
+                
+                prop.load(inputStream);
+                
+                String workercount = prop.getProperty(workercounts);
+                iWorkercount = Integer.parseInt(workercount);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                }
         
         try {
             
@@ -873,7 +934,7 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
 
-            for (int i = 0; i < workerCount; i++) {
+            for (int i = 0; i < iWorkercount; i++) {
             
                 mitarbeiter[i] = (Mitarbeiter) um.unmarshal(files[i]);
                 insertMitarbeiter(mitarbeiter[i]);
@@ -889,7 +950,7 @@ public class personalGUI extends javax.swing.JFrame {
         
         File x = new File(xmlfolder);
 
-        mitarbeiterCount = workerCount;
+        mitarbeiterCount = iWorkercount;
         
     }
     
@@ -1059,6 +1120,34 @@ public class personalGUI extends javax.swing.JFrame {
 //                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
 //                mnuDB.setEnabled(false);
 //            }
+//        }
+    
+//        File config = new File(xmlfolder + "settings.properties");
+//        
+//        String line = null;
+//        int workerCount = 0;
+//        try {
+//            BufferedReader dat = new BufferedReader(new FileReader(config));
+//            line = dat.readLine();
+//            dat.close();
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("Datei nicht gefunden. Werde keine daten einlesen.");
+//        } catch (IOException ex) {
+//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (Exception x) {
+//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, x);
+//            System.out.println("FEHLER! Erster Start?");
+//        }
+//        
+//        try{
+//        
+//        String linel = line.substring(line.lastIndexOf(':') + 2, line.length());
+//        workerCount = Integer.parseInt(linel);
+//        
+//        }catch(NullPointerException ex){
+//            
+//            System.out.println("Konnte workercount nicht auslesen!");
+//            
 //        }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
