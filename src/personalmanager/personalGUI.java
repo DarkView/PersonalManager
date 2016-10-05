@@ -436,6 +436,8 @@ public class personalGUI extends javax.swing.JFrame {
                 mitDBLoad.setEnabled(true);
                 mitDB.setEnabled(false);
                 mitDBClose.setEnabled(true);
+                
+                
 
                 Statement query;
                 try {
@@ -745,11 +747,11 @@ public class personalGUI extends javax.swing.JFrame {
       
       if (result == JOptionPane.OK_OPTION) {
           
-          System.out.println("--- Neuer Mitarbeiter Start ---\n");
+         System.out.println("--- Neuer Mitarbeiter Start ---\n");
          System.out.println("Vorname: " + firstNameField.getText());
          System.out.println("Nachname: " + lastNameField.getText());
          System.out.println("Gehalt: " + salaryField.getText());
-          System.out.println("\n--- Neuer Mitarbeiter Ende ---\n");
+         System.out.println("\n--- Neuer Mitarbeiter Ende ---\n");
          
          double salary = 0;
          
@@ -826,7 +828,7 @@ public class personalGUI extends javax.swing.JFrame {
         
         model.setRowCount(0);
         
-        File config = new File(xmlfolder + "settings.cfg");
+        File config = new File(xmlfolder + "settings.properties");
         
         String line = null;
         int workerCount = 0;
