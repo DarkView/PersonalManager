@@ -426,60 +426,8 @@ public class personalGUI extends javax.swing.JFrame {
 
             // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
 
-            try {
-
-                Class.forName("com.mysql.jdbc.Driver");
-
-                JOptionPane.showMessageDialog(null, "Versuche zu verbinden\nDies kann einige Zeit in Anspruch nehmen\nBitte warten...", "", JOptionPane.INFORMATION_MESSAGE);
-
-                conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
-                    + dbPort + "/" + dbName + "?" + "user=" + dbUser + "&"
-                    + "password=" + dbPassword);
-
-                JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
-                mitDBSave.setEnabled(true);
-                mitDBLoad.setEnabled(true);
-                mitDB.setEnabled(false);
-                mitDBClose.setEnabled(true);
-                
-                
-
-                Statement query;
-                try {
-                    query = conn.createStatement();
-
-                    String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Name TEXT," +
-                    " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";
-
-                    query.executeUpdate(sql);
-                    
-                    sql = "ALTER TABLE `Mitarbeiter` ADD UNIQUE (`Mitarbeiter_ID`)";
-
-                    query.executeUpdate(sql);
-
-                }catch(SQLException e){
-
-                    e.printStackTrace();
-
-                }catch(Exception e){
-
-                    e.printStackTrace();
-
-                }
-
-            } catch (ClassNotFoundException e) {
-
-                JOptionPane.showMessageDialog(null, "Konnte Treiber nicht finden", "Fehler!", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Treiber nicht gefunden");
-
-            } catch (SQLException e) {
-
-                JOptionPane.showMessageDialog(null, "Verbinden nicht möglich", "Fehler!", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Connect nicht moeglich");
-                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
-
-            }
-
+            connectDB();
+            
         }
 
     }//GEN-LAST:event_mitDBActionPerformed
@@ -687,19 +635,6 @@ public class personalGUI extends javax.swing.JFrame {
             }
             
         }
-
-        
-//        PrintWriter writer = null;
-//        try {
-//            
-//            writer = new PrintWriter(xmlfolder + "settings.properties");
-//            writer.print("workercount: " + mitarbeiterCount);
-//            
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            writer.close();
-//        }
         
         try {
             int max = mitarbeiterCount;
@@ -911,6 +846,18 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 String workercount = prop.getProperty(workercounts);
                 iWorkercount = Integer.parseInt(workercount);
+                dbHost = prop.getProperty(dbHosts);
+                dbPort = prop.getProperty(dbPorts);
+                dbName = prop.getProperty(dbNames);
+                dbUser = prop.getProperty(dbUsers);
+                
+                if (!(dbHost == "" || dbPort == "" || dbName == "" || dbUser == "")) {
+                    
+                    dbPassword = JOptionPane.showInputDialog(null, "Passwort der Datenbank eingeben");
+                    
+                    connectDB();
+                    
+                }
                 
             } catch (IOException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -957,6 +904,64 @@ public class personalGUI extends javax.swing.JFrame {
     private void loadAllDB(){
         
         
+        
+    }
+    
+    private void connectDB(){
+        
+        try {
+
+                Class.forName("com.mysql.jdbc.Driver");
+
+                JOptionPane.showMessageDialog(null, "Versuche zu verbinden\nDies kann einige Zeit in Anspruch nehmen\nBitte warten...", "", JOptionPane.INFORMATION_MESSAGE);
+
+                conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":"
+                    + dbPort + "/" + dbName + "?" + "user=" + dbUser + "&"
+                    + "password=" + dbPassword);
+
+                JOptionPane.showMessageDialog(null, "Verbindung wurde hergestellt", "", JOptionPane.INFORMATION_MESSAGE);
+                mitDBSave.setEnabled(true);
+                mitDBLoad.setEnabled(true);
+                mitDB.setEnabled(false);
+                mitDBClose.setEnabled(true);
+                
+                
+
+                Statement query;
+                try {
+                    query = conn.createStatement();
+
+                    String sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Name TEXT," +
+                    " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";
+
+                    query.executeUpdate(sql);
+                    
+                    sql = "ALTER TABLE `Mitarbeiter` ADD UNIQUE (`Mitarbeiter_ID`)";
+
+                    query.executeUpdate(sql);
+
+                }catch(SQLException e){
+
+                    e.printStackTrace();
+
+                }catch(Exception e){
+
+                    e.printStackTrace();
+
+                }
+
+            } catch (ClassNotFoundException e) {
+
+                JOptionPane.showMessageDialog(null, "Konnte Treiber nicht finden", "Fehler!", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Treiber nicht gefunden");
+
+            } catch (SQLException e) {
+
+                JOptionPane.showMessageDialog(null, "Verbinden nicht möglich", "Fehler!", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Connect nicht moeglich");
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
+
+            }
         
     }
     
