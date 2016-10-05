@@ -287,29 +287,6 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 }
         
-//        File f = new File(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
-//        if(!f.exists() && !f.isDirectory()) { 
-//            
-//            try {
-//                
-//                System.out.println("Versuche MySQL-Treiber herunterzuladen.");
-//                
-//                URL website = new URL("http://dunkel.darkdl.de/mysql-connector-java-5.1.39-bin.jar");
-//                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-//                FileOutputStream fos = new FileOutputStream(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
-//                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-//                
-//                System.out.println("MySQL-Treiber erfolgreich heruntergeladen.");
-//                
-//                restartApplication();
-//                
-//            }catch(Exception ex){
-//                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-//                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
-//                mnuDB.setEnabled(false);
-//            }
-//        }
-        
         loadall();
         
         WindowListener exitListener = new WindowAdapter() {
@@ -1057,7 +1034,30 @@ public class personalGUI extends javax.swing.JFrame {
 //              
 //              System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
 //              
-//          }
+//          }  
+    
+//        File f = new File(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+//        if(!f.exists() && !f.isDirectory()) { 
+//            
+//            try {
+//                
+//                System.out.println("Versuche MySQL-Treiber herunterzuladen.");
+//                
+//                URL website = new URL("http://dunkel.darkdl.de/mysql-connector-java-5.1.39-bin.jar");
+//                ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+//                FileOutputStream fos = new FileOutputStream(xmlfolder + "/mysql-connector-java-5.1.39-bin.jar");
+//                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+//                
+//                System.out.println("MySQL-Treiber erfolgreich heruntergeladen.");
+//                
+//                restartApplication();
+//                
+//            }catch(Exception ex){
+//                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+//                JOptionPane.showMessageDialog(null, "Konnte Datenbantreiber nicht herunterladen.", "", JOptionPane.ERROR_MESSAGE);
+//                mnuDB.setEnabled(false);
+//            }
+//        }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCreateWorker;
