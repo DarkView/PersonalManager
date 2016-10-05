@@ -360,6 +360,12 @@ public class personalGUI extends javax.swing.JFrame {
             mitDBClose.setEnabled(false);
             mitDBSave.setEnabled(false);
             mitDBLoad.setEnabled(false);
+            
+            dbHost = "none";
+            dbPort = "none";
+            dbName = "none";
+            dbUser = "none";
+            
             JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -379,11 +385,11 @@ public class personalGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mitDBSaveActionPerformed
 
-    String dbHost = "";
-    String dbPort = "";
-    String dbName = "";
-    String dbUser = "";
-    String dbPassword = "";
+    String dbHost = "none";
+    String dbPort = "none";
+    String dbName = "none";
+    String dbUser = "none";
+    String dbPassword = "none";
     
     private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
 
@@ -624,7 +630,7 @@ public class personalGUI extends javax.swing.JFrame {
                             
             try {
                 
-                prop.store(writer, "\nProperties-Datei des personalmanagers - NICHT LÖSCHEN!\n\n\n   ...Bitte\n");
+                prop.store(writer, "\n Properties-Datei des personalmanagers - NICHT LÖSCHEN!\n\n\n   ...Bitte\n");
                 
             } catch (IOException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -834,10 +840,9 @@ public class personalGUI extends javax.swing.JFrame {
         try {
             inputStream = new FileInputStream(xmlfolder + propFileName);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Konnte die settings.properties (" + xmlfolder + ") nicht finden!");
         }
-                System.out.println(inputStream);
-                
+
 		if (inputStream != null) {
                             
             try {
@@ -851,7 +856,8 @@ public class personalGUI extends javax.swing.JFrame {
                 dbName = prop.getProperty(dbNames);
                 dbUser = prop.getProperty(dbUsers);
                 
-                if (!(dbHost == "" || dbPort == "" || dbName == "" || dbUser == "")) {
+                if ("none".equals(dbHost) || "none".equals(dbPort) || "none".equals(dbName) || "none".equals(dbUser)) {
+                }else{
                     
                     dbPassword = JOptionPane.showInputDialog(null, "Passwort der Datenbank eingeben");
                     
