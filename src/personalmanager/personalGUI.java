@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -908,10 +909,32 @@ public class personalGUI extends javax.swing.JFrame {
     }
     
     private void loadAllDB(){
+                     
+        int max = mitarbeiterCount;
+        int maxDB = 999 + mitarbeiterCount;
         
+        Statement query = null;      
+        try {
+            query = conn.createStatement();
+        } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+        try {
+
+            for (int i = 999; i < maxDB; i++) {
+                
+            String sql = "SELECT `Name`, `Mitarbeiter_ID`, `Gehalt`, `Zeit_gearbeitet` FROM `Mitarbeiter` WHERE Mitarbeiter_ID = '" + maxDB + "'";
+            
+            ResultSet result = query.executeQuery(sql);
+                System.out.println(result);
+                
+                }    
+            } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
-    }
+    } // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
     
     private void connectDB(){
         
