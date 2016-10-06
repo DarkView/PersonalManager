@@ -477,7 +477,7 @@ public class personalGUI extends javax.swing.JFrame {
                 loadall();
             }
             catch(Exception x) {
-                JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -860,10 +860,20 @@ public class personalGUI extends javax.swing.JFrame {
                 if ("none".equals(dbHost) || "none".equals(dbPort) || "none".equals(dbName) || "none".equals(dbUser)) {
                 }else{
                     
-                    dbPassword = JOptionPane.showInputDialog(null, "Passwort der Datenbank eingeben");
+                    JTextField pwField = new JPasswordField(10);
+                    JPanel dbPass = new JPanel();
+                    dbPass.add(new JLabel("Passwort der zuletzt verbundenen Datenbank eingeben:\n"));
+                    dbPass.add(pwField);
                     
-                    connectDB();
+                    int dbPasswordResult = JOptionPane.showConfirmDialog(null, dbPass, "Datenbankinformationen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                     
+                    if (dbPasswordResult == JOptionPane.OK_OPTION) {
+                        
+                        dbPassword = pwField.getText();
+                        
+                        connectDB();
+                    
+                    }
                 }
                 
             } catch (IOException ex) {
