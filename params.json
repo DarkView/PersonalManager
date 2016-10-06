@@ -1,0 +1,6 @@
+{
+  "name": "Personalmanager",
+  "tagline": "Einfach Mitarbeiter verwalten. Lokal und Extern Speichern.",
+  "body": "# **PersonalManager | Ein \"Schulprojekt\"**\r\n\r\nVersion 1.0.1 des PersonalManagers von DarkView und Dunkler_Held.\r\n\r\nZum Installieren des Programmes \"PersonalManager - Installieren.exe\" herunterladen und ausführen.\r\nhttp://darkdl.de/PersonalManager\r\n\r\n***\r\n\r\n_Version 1.0.1:_\r\n\r\n [Hinzugefügt] Splash-Icon beim Start des Programmes.\r\n\r\n***\r\n\r\n_Version 1.0.0:_\r\n\r\n - Mitarbeiter hinzufügen, bearbeiten und löschen.\r\n - Abspeichern in XML dateien.\r\n - Auslesen aus den XML dateien.\r\n - Mit Datenbank verbinden und dort Daten speichern ALLERDINGS nocht nicht auslesen. (Späterer Release)\r\n\r\n***\r\n\r\n![[Icon]](http://darkdl.de/PMIcon.png)\r\nIcon von Freepiks\r\n \r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
