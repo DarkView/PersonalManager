@@ -259,14 +259,42 @@ public class personalGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    //All sorts of declarations
     Mitarbeiter[] mitarbeiter = new Mitarbeiter[8999];
     int mitarbeiterCount = 0;
     
     String documents = System.getProperty("user.home")+"/Documents";
-        
-        boolean success;
-            
-        String xmlfolder = documents + "/PersonalManager/";
+    
+    boolean success;
+    
+    String xmlfolder = documents + "/PersonalManager/";
+    
+    private static Connection conn;
+    
+    String dbHost = "none";
+    String dbPort = "none";
+    String dbName = "none";
+    String dbUser = "none";
+    String dbPassword = "none";
+    
+    String result = "";
+    InputStream inputStream;
+    String workercounts = "workercount";
+    String dbHosts = "dbHost";
+    String dbPorts = "dbPort";
+    String dbNames = "dbName";
+    String dbUsers = "dbUser";
+    
+    private DefaultTableModel model = new DefaultTableModel(0, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column){return false;} 
+            };
+    
+    int iWorkercount = 0;
+    
+    //End of all sorts of declarations
+    
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tabPersonal.setModel(model);
@@ -339,8 +367,6 @@ public class personalGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mitEditActionPerformed
 
-    private static Connection conn;
-    
     private void cmdDeleteWorkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDeleteWorkerActionPerformed
         deleteWorker();
     }//GEN-LAST:event_cmdDeleteWorkerActionPerformed
@@ -386,12 +412,6 @@ public class personalGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mitDBSaveActionPerformed
 
-    String dbHost = "none";
-    String dbPort = "none";
-    String dbName = "none";
-    String dbUser = "none";
-    String dbPassword = "none";
-    
     private void mitDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBActionPerformed
 
         JTextField dbHostField = new JTextField(7);
@@ -438,8 +458,6 @@ public class personalGUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_mitDBActionPerformed
-
-    JFileChooser fChooser = new JFileChooser();
     
     private void deleteWorker() {
         
@@ -585,14 +603,6 @@ public class personalGUI extends javax.swing.JFrame {
             }
     }
     
-    String result = "";
-    InputStream inputStream;
-    String workercounts = "workercount";
-    String dbHosts = "dbHost";
-    String dbPorts = "dbPort";
-    String dbNames = "dbName";
-    String dbUsers = "dbUser";
-    
     private void saveall() {
         
         String propFileName = "settings.properties";
@@ -717,12 +727,6 @@ public class personalGUI extends javax.swing.JFrame {
 
     }
 
-    private DefaultTableModel model = new DefaultTableModel(0, 0) {
-        @Override
-        public boolean isCellEditable(int row, int column){return false;} 
-            };
-    
-    
     public void insertMitarbeiter(Mitarbeiter m) {
         
         model.addRow(new Object[]{m.getName(), "#" + m.getPersonalNumber(), m.getSalary() + "€", m.getTime() + "h"});
@@ -826,8 +830,6 @@ public class personalGUI extends javax.swing.JFrame {
         System.exit(0);
 
     }
-    
-    int iWorkercount = 0;
     
     public void loadall(){
         
