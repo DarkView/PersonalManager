@@ -293,6 +293,8 @@ public class personalGUI extends javax.swing.JFrame {
     
     int iWorkercount = 0;
     
+    final int TYPE_EDIT = 1;
+    final int TYPE_DELETE = 2;
     //End of all sorts of declarations
     
     
@@ -459,50 +461,68 @@ public class personalGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mitDBActionPerformed
     
-    private void deleteWorker() {
-        
-        int delete = -1;
-        Mitarbeiter toDelete = null;
-        
-        if(tabPersonal.getSelectedRow() != -1) {
-            delete = tabPersonal.getSelectedRow();
-            toDelete = mitarbeiter[delete];
-            
-        }
-        else {
-            toDelete = findMitarbeiterByID();
-            if(toDelete != null) {
-                for (int i = 0; i < mitarbeiter.length; i++) {
-                    if(mitarbeiter[i] == toDelete) {
-                        delete = i;
+    private int findMitarbeiterById(int id) {
+        int ret = -1;
+        for (int i = 0; i < mitarbeiter.length; i++) {
+                    if(mitarbeiter[i].getPersonalNumber() == id) {
+                        ret = i;
                         break;
                     }
                 }
-            }
+        return ret;
+    }
+    
+    private void deleteWorker() {
+        
+        int delete;
+        
+        if(tabPersonal.getSelectedRow() != -1) {
+            
+            
+            delete = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
+            
+        }
+        else {
+            delete = findMitarbeiterByUnknownId(TYPE_DELETE);
         }
         
-        if(toDelete != null) {
-            try{
-                Mitarbeiter m = mitarbeiter[delete];
-                System.out.println(m.getName());
-                System.out.println(m.getPersonalNumber());
-                File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
-                System.out.println(f.getPath());
-                f.delete();
-                mitarbeiter[delete] = null;
-                mitarbeiterCount -= 1;
-                saveall();
-                loadall();
-            }
-            catch(Exception x) {
-                JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
+        if(delete != -1) {
+            String message = "Möchten Sie " + mitarbeiter[delete].getName() + " wirklich löschen?";
+            if(JOptionPane.showConfirmDialog(null, message, "Löschen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+                try{
+                    Mitarbeiter m = mitarbeiter[delete];
+                    System.out.println(m.getName());
+                    System.out.println(m.getPersonalNumber());
+                    File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+                    System.out.println(f.getPath());
+                    f.delete();
+                    mitarbeiter[delete] = null;
+                    mitarbeiterCount -= 1;
+                    saveall();
+                    loadall();
+                }
+                catch(Exception x) {
+                    JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }
     
-    private Mitarbeiter findMitarbeiterByID() {
+    private int findMitarbeiterByUnknownId(int type) {
         
-        Mitarbeiter mit;
+        
+        String message = "";
+        int ret = -1;
+        
+        
+        switch(type) {
+            case TYPE_EDIT:
+                message = "Welchen Mitarbeiter bearbeiten?";
+                break;
+            case TYPE_DELETE:
+                message = "Welchen Mitarbeiter löschen?";
+                break;
+        }
         
         JTextField idField = new JTextField(5);
       
@@ -511,28 +531,30 @@ public class personalGUI extends javax.swing.JFrame {
         editWorker.add(idField);
 
         int result = JOptionPane.showConfirmDialog(null, editWorker, 
-               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      
-        mit = null;
+               message, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       
         if (result == JOptionPane.OK_OPTION) {
 
-            int searchID = Integer.parseInt(idField.getText().trim());
-            int toEditID = searchID - 1000;
-
+            
             try{
+                
+                int searchID = Integer.parseInt(idField.getText().trim());
+                int toEditID = searchID - 1000;
 
-            for (int i = 0; i <= toEditID; i++) {
+                for (int i = 0; i <= toEditID; i++) {
 
-                if (mitarbeiter[i].getPersonalNumber() == searchID) {
-
-                    mit = mitarbeiter[i];
-                    i = toEditID;
-                    break;
-
+                    if (mitarbeiter[i].getPersonalNumber() == searchID) {
+                        
+                        ret = i;
+                        break;
+                        
+                    }
                 }
-            }
 
+            }catch (NumberFormatException x){
+                
+                JOptionPane.showMessageDialog(null, "Bitte Id eingeben", "Fehler", JOptionPane.ERROR_MESSAGE);
+                
             }catch(Exception ex){
 
                 System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
@@ -540,8 +562,8 @@ public class personalGUI extends javax.swing.JFrame {
             }
 
         }
-
-        return mit;
+        
+        return ret;
     }
     
     private void editWorker() {
@@ -550,25 +572,17 @@ public class personalGUI extends javax.swing.JFrame {
         Mitarbeiter toEdit = null;
         
         if(tabPersonal.getSelectedRow() != -1) {
-            edit = tabPersonal.getSelectedRow();
-            toEdit = mitarbeiter[edit];
+            
+            edit = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
             
         }
         else {
-            toEdit = findMitarbeiterByID();
-            if(toEdit != null) {
-                for (int i = 0; i < mitarbeiter.length; i++) {
-                    if(mitarbeiter[i] == toEdit) {
-                        edit = i;
-                        break;
-                    }
-                }
-            }
+            edit = findMitarbeiterByUnknownId(TYPE_EDIT);
         }
 
         if(edit != -1) {
 
-            if (toEdit != null) {
+            if (toEdit != null || true) {
 
                 JTextField nameField = new JTextField(15);
                 JTextField salaryField = new JTextField(5);
@@ -580,8 +594,8 @@ public class personalGUI extends javax.swing.JFrame {
                 toEditWorker.add(new JLabel("Gehalt:"));
                 toEditWorker.add(salaryField);
 
-                nameField.setText(toEdit.getName());
-                salaryField.setText(Double.toString(toEdit.getSalary()) + "€");
+                nameField.setText(mitarbeiter[edit].getName());
+                salaryField.setText(Double.toString(mitarbeiter[edit].getSalary()) + "€");
 
                 int resultEdit = JOptionPane.showConfirmDialog(null, toEditWorker, 
                    "Neue Werte für Mitarbeiter", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -1078,6 +1092,54 @@ public class personalGUI extends javax.swing.JFrame {
     
     
     //Alter Code (Friedhof):
+    
+//    private Mitarbeiter findMitarbeiterByID() {
+//        
+//        Mitarbeiter mit;
+//        
+//        JTextField idField = new JTextField(5);
+//      
+//        JPanel editWorker = new JPanel();
+//        editWorker.add(new JLabel("Mitarbeiter-ID:"));
+//        editWorker.add(idField);
+//
+//        int result = JOptionPane.showConfirmDialog(null, editWorker, 
+//               "Welchern Mitarbeiter bearbeiten?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+//      
+//        mit = null;
+//      
+//        if (result == JOptionPane.OK_OPTION) {
+//
+//            try{
+//                
+//                int searchID = Integer.parseInt(idField.getText().trim());
+//                int toEditID = searchID - 1000;
+//
+//                for (int i = 0; i <= toEditID; i++) {
+//
+//                    if (mitarbeiter[i].getPersonalNumber() == searchID) {
+//
+//                        mit = mitarbeiter[i];
+//                        i = toEditID;
+//                        break;
+//
+//                    }
+//                }
+//
+//            }catch (NumberFormatException x){
+//                
+//                JOptionPane.showMessageDialog(null, "Bitte Id eingeben", "Fehler", JOptionPane.ERROR_MESSAGE);
+//                
+//            }catch(Exception ex){
+//
+//                System.out.println("Konnte Datei nicht finden. Weiss auch nicht welche.");
+//
+//            }
+//
+//        }
+//
+//        return mit;
+//    }
     
     /*if (fChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
             String path = fChooser.getSelectedFile().toString();
