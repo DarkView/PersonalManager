@@ -489,38 +489,87 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void deleteWorker() {
         
-        int delete;
+        System.out.println(tabPersonal.getSelectedRowCount());
         
-        if(tabPersonal.getSelectedRow() != -1) {
-            
-            
-            delete = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
-            
-        }
-        else {
-            delete = findMitarbeiterByUnknownId(TYPE_DELETE);
-        }
-        
-        if(delete != -1) {
-            String message = "Möchten Sie " + mitarbeiter[delete].getName() + " wirklich löschen?";
-            if(JOptionPane.showConfirmDialog(null, message, "Löschen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
-                try{
-                    Mitarbeiter m = mitarbeiter[delete];
-                    System.out.println(m.getName());
-                    System.out.println(m.getPersonalNumber());
-                    File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
-                    System.out.println(f.getPath());
-                    f.delete();
-                    mitarbeiter[delete] = null;
-                    mitarbeiterCount -= 1;
-                    saveall();
-                    loadall();
+            int delete = -1;
+            int[] aDelete = {};
+            int[] toDelete;
+            boolean moreThan1 = false;
+
+            if(tabPersonal.getSelectedRowCount() != 0) {
+                if(tabPersonal.getSelectedRowCount() > 1) {
+                    aDelete = tabPersonal.getSelectedRows();
+                    moreThan1 = true;
+                    delete = -2;
                 }
-                catch(Exception x) {
-                    JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
+                else {
+                    delete = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
                 }
             }
-        }
+            else {
+                delete = findMitarbeiterByUnknownId(TYPE_DELETE);
+            }
+
+            System.out.println(Arrays.toString(aDelete));
+            
+            if(delete != -1) {
+                
+                if(!moreThan1) {
+
+                    String message = "Möchten Sie " + mitarbeiter[delete].getName() + " wirklich löschen?";
+                    if(JOptionPane.showConfirmDialog(null, message, "Löschen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+                        try{
+                            Mitarbeiter m = mitarbeiter[delete];
+                            System.out.println(m.getName());
+                            System.out.println(m.getPersonalNumber());
+                            File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+                            System.out.println(f.getPath());
+                            f.delete();
+                            mitarbeiter[delete] = null;
+                            mitarbeiterCount -= 1;
+                            saveall();
+                            loadall();
+                        }
+                        catch(Exception x) {
+                            JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+                else {
+                    
+                    String message = "Möchten Sie alle markierten Mitarbeiter wirklich löschen?";
+                    if(JOptionPane.showConfirmDialog(null, message, "Löschen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
+                        try{
+                            toDelete = new int[aDelete.length];
+                            for (int i = 0; i < aDelete.length; i++) {
+                                toDelete[i] = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(aDelete[i], 1).toString().substring(1)));
+                            }
+                            
+                            
+                            for (int i = 0; i < toDelete.length; i++) {
+                                
+                                
+                                Mitarbeiter m = mitarbeiter[toDelete[i]];
+    //                            System.out.println(m.getName());
+    //                            System.out.println(m.getPersonalNumber());
+                                File f = new File(xmlfolder + "mitarbeiter" + m.getPersonalNumber() + ".xml");
+    //                            System.out.println(f.getPath());
+                                f.delete();
+                                mitarbeiter[toDelete[i]] = null;
+                                mitarbeiterCount -= 1;
+                                saveall();
+                                
+                            }
+                        }
+                        catch(Exception x) {
+                            JOptionPane.showMessageDialog(null, "Mitarbeiter nicht gefunden", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        }
+                        
+                                loadall();
+                        
+                    }
+                }
+            }
     }
     
     private int findMitarbeiterByUnknownId(int type) {
