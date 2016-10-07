@@ -294,6 +294,10 @@ public class personalGUI extends javax.swing.JFrame {
     
     final int TYPE_EDIT = 1;
     final int TYPE_DELETE = 2;
+
+    String dbCounts = "dbCount";
+    int dbCount = 0;
+    
     //End of all sorts of declarations
     
     
@@ -651,6 +655,7 @@ public class personalGUI extends javax.swing.JFrame {
                             prop.setProperty(dbPorts, dbPort);
                             prop.setProperty(dbNames, dbName);
                             prop.setProperty(dbUsers, dbUser);
+                            prop.setProperty(dbCounts, Integer.toString(dbCount));
                             
             try {
                 
@@ -734,6 +739,10 @@ public class personalGUI extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
                 break;
+            }finally{
+                
+                dbCount = i;
+                
             }
                 
             }
@@ -809,7 +818,7 @@ public class personalGUI extends javax.swing.JFrame {
          
           if (salary != 0) {
               
-              mitarbeiter[saveIn] = new Mitarbeiter(lastNameField.getText() + ", " + firstNameField.getText(), mID, salary);
+              mitarbeiter[saveIn] = new Mitarbeiter(lastNameField.getText().trim() + ", " + firstNameField.getText().trim(), mID, salary);
               insertMitarbeiter(mitarbeiter[saveIn]);
               mitarbeiterCount++;
               
@@ -871,6 +880,7 @@ public class personalGUI extends javax.swing.JFrame {
                 dbPort = prop.getProperty(dbPorts);
                 dbName = prop.getProperty(dbNames);
                 dbUser = prop.getProperty(dbUsers);
+                dbCount = Integer.parseInt(prop.getProperty(dbCounts));
                 
                 if ("none".equals(dbHost) || "none".equals(dbPort) || "none".equals(dbName) || "none".equals(dbUser)) {
                 }else{
@@ -935,8 +945,8 @@ public class personalGUI extends javax.swing.JFrame {
     
     private void loadAllDB(){
                      
-        int max = mitarbeiterCount;
-        int maxDB = 999 + mitarbeiterCount;
+        int max = dbCount;
+        int maxDB = 1000 + dbCount;
         
         Statement query = null;      
         try {
@@ -946,14 +956,32 @@ public class personalGUI extends javax.swing.JFrame {
         }
         
         try {
-
-            for (int i = 999; i < maxDB; i++) {
+            
+            model.setRowCount(0);
+            
+            for (int i = 1000; i < maxDB + 1; i++) {
                 
-            String sql = "SELECT `Name`, `Mitarbeiter_ID`, `Gehalt`, `Zeit_gearbeitet` FROM `Mitarbeiter` WHERE Mitarbeiter_ID = '" + maxDB + "'";
+            String sql = "SELECT `Name`, `Mitarbeiter_ID`, `Gehalt`, `Zeit_gearbeitet` FROM `Mitarbeiter` WHERE Mitarbeiter_ID = '" + i + "'";
             
             ResultSet result = query.executeQuery(sql);
-                System.out.println(result);
+
+            if (result.next()) {
+            InputStream stream = result.getBinaryStream(1);
+
+                System.out.println(result.getString("Name"));
+                System.out.println(result.getString("Mitarbeiter_ID"));
+                System.out.println(result.getString("Gehalt"));
+                System.out.println(result.getString("Zeit_gearbeitet"));
                 
+                Mitarbeiter m = new Mitarbeiter();
+                m.setName(result.getString("Name"));
+                m.setPersonalNumber(Integer.parseInt(result.getString("Mitarbeiter_ID")));
+                m.setSalary(Integer.parseInt(result.getString("Gehalt")));
+                m.setTime(Integer.parseInt(result.getString("Zeit_gearbeitet")));
+
+                insertMitarbeiter(m);
+                
+            }
                 }    
             } catch (SQLException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
