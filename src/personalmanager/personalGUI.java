@@ -407,13 +407,25 @@ public class personalGUI extends javax.swing.JFrame {
 
     private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
 
+        int result = JOptionPane.showConfirmDialog(null, "Wollen sie wirklich aus der Datenbank laden?\nDies wird alle lokalen Mitarbeiter ersetzen!", "Sind Sie sicher?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+        
         loadAllDB();
+        
+        }
 
     }//GEN-LAST:event_mitDBLoadActionPerformed
 
     private void mitDBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBSaveActionPerformed
 
+        int result = JOptionPane.showConfirmDialog(null, "Wollen sie wirklich in die Datenbank abspeichern?\nDies wird alle abgespeicherten Mitarbeiter ersetzen!", "Sind Sie sicher?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+        
         saveAllDB();
+        
+        }
 
     }//GEN-LAST:event_mitDBSaveActionPerformed
 
@@ -985,7 +997,11 @@ public class personalGUI extends javax.swing.JFrame {
                 }    
             } catch (SQLException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }finally{
+
+            mitarbeiterCount = dbCount;
+            
+        }
         
     } // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
     
