@@ -37,7 +37,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * @version 1.0
+ * @version 1.0.4
  * @author Dunkel, DunklerHeld
  */
 public class personalGUI extends javax.swing.JFrame {

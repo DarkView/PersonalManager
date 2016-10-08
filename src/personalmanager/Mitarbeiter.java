@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * @version 1.0
+ * @version 1.0.4
  * @author Dunkel, DunklerHeld
  */
 @XmlRootElement(name="MITARBEITER")
