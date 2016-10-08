@@ -46,6 +46,7 @@ public class personalGUI extends javax.swing.JFrame {
      * Creates new form personalGUI
      */
     public personalGUI() {
+        this.setResizable(false);
         initComponents();
     }
 
@@ -90,6 +91,7 @@ public class personalGUI extends javax.swing.JFrame {
             }
         });
 
+        tabPersonal.setAutoCreateRowSorter(true);
         tabPersonal.setModel(model);
         tabPersonal.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tabPersonal.getTableHeader().setReorderingAllowed(false);
@@ -144,7 +146,7 @@ public class personalGUI extends javax.swing.JFrame {
 
         mnuOptions.setText("Optionen");
 
-        mitNewMitarbeiter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
+        mitNewMitarbeiter.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         mitNewMitarbeiter.setText("Neuen Mitarbeiter hinzufügen");
         mitNewMitarbeiter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,7 +174,7 @@ public class personalGUI extends javax.swing.JFrame {
         mnuOptions.add(mitDelete);
         mnuOptions.add(mse1);
 
-        mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
+        mitSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         mitSave.setText("Speichern");
         mitSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
