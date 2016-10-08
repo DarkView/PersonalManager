@@ -73,6 +73,9 @@ public class personalGUI extends javax.swing.JFrame {
         mse1 = new javax.swing.JPopupMenu.Separator();
         mitSave = new javax.swing.JMenuItem();
         mitReload = new javax.swing.JMenuItem();
+        mnuTime = new javax.swing.JMenu();
+        mnuAddTime = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mnuDB = new javax.swing.JMenu();
         mitDB = new javax.swing.JMenuItem();
         mitDBSave = new javax.swing.JMenuItem();
@@ -194,6 +197,21 @@ public class personalGUI extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuOptions);
 
+        mnuTime.setText("Zeit");
+
+        mnuAddTime.setText("Zeit hinzufügen");
+        mnuAddTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAddTimeActionPerformed(evt);
+            }
+        });
+        mnuTime.add(mnuAddTime);
+
+        jMenuItem1.setText("Zeit festlegen");
+        mnuTime.add(jMenuItem1);
+
+        jMenuBar1.add(mnuTime);
+
         mnuDB.setText("Datenbank");
 
         mitDB.setText("Mit Datenbank verbinden");
@@ -277,7 +295,7 @@ public class personalGUI extends javax.swing.JFrame {
     String dbPort = "none";
     String dbName = "none";
     String dbUser = "none";
-    String dbPassword = "none";
+    private String dbPassword = "none";
     
     String result = "";
     InputStream inputStream;
@@ -296,6 +314,8 @@ public class personalGUI extends javax.swing.JFrame {
     
     final int TYPE_EDIT = 1;
     final int TYPE_DELETE = 2;
+    final int TYPE_ADDTIME = 3;
+    final int TYPE_SETTIME = 4;
 
     String dbCounts = "dbCount";
     int dbCount = 0;
@@ -477,6 +497,38 @@ public class personalGUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_mitDBActionPerformed
+
+    private void mnuAddTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAddTimeActionPerformed
+        
+        int add = -1;
+        Mitarbeiter toAdd = null;
+        
+        double time = -1;
+        
+        if(tabPersonal.getSelectedRow() != -1) {
+            
+            add = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
+            
+        }
+        else {
+            add = findMitarbeiterByUnknownId(TYPE_ADDTIME);
+        }
+        
+        time = Double.parseDouble(JOptionPane.showInputDialog("Wie viel Zeit hinzufügen?\n(In Minuten)"));
+        
+        if(add != -1 && time != -1){
+        
+        System.out.println(add);
+        toAdd = mitarbeiter[add];
+        
+        addTime(toAdd, time);
+        
+        saveall();
+        loadall();
+        
+        }
+
+    }//GEN-LAST:event_mnuAddTimeActionPerformed
     
     private int findMitarbeiterById(int id) {
         int ret = -1;
@@ -588,6 +640,12 @@ public class personalGUI extends javax.swing.JFrame {
             case TYPE_DELETE:
                 message = "Welchen Mitarbeiter löschen?";
                 break;
+            case TYPE_ADDTIME:
+                message = "Welchem Mitarbeiter Zeit hinzufügen?";
+                break;
+            case TYPE_SETTIME:
+                message = "Wessen Mitarbeiters Zeit setzen?";
+                break;
         }
         
         JTextField idField = new JTextField(5);
@@ -601,7 +659,6 @@ public class personalGUI extends javax.swing.JFrame {
       
         if (result == JOptionPane.OK_OPTION) {
 
-            
             try{
                 
                 int searchID = Integer.parseInt(idField.getText().trim());
@@ -817,7 +874,7 @@ public class personalGUI extends javax.swing.JFrame {
 
     public void insertMitarbeiter(Mitarbeiter m) {
         
-        model.addRow(new Object[]{m.getName(), "#" + m.getPersonalNumber(), m.getSalary() + "€", m.getTime() + "h"});
+        model.addRow(new Object[]{m.getName(), "#" + m.getPersonalNumber(), m.getSalary() + "€", m.getTime() + " min"});
         
     }
     
@@ -948,7 +1005,7 @@ public class personalGUI extends javax.swing.JFrame {
                 dbUser = prop.getProperty(dbUsers);
                 dbCount = Integer.parseInt(prop.getProperty(dbCounts));
                 
-                if ("none".equals(dbHost) || "none".equals(dbPort) || "none".equals(dbName) || "none".equals(dbUser)) {
+                if ("none".equals(dbHost) || "none".equals(dbPort) || "none".equals(dbName) || "none".equals(dbUser) || dbPassword != "none") {
                 }else{
                     
                     JTextField pwField = new JPasswordField(10);
@@ -1037,7 +1094,7 @@ public class personalGUI extends javax.swing.JFrame {
             InputStream stream = result.getBinaryStream(1);
 
                 System.out.println("Name: " + result.getString("Name") + "; ID: " + result.getString("Mitarbeiter_ID") + "; Gehalt: " + result.getString("Gehalt") + "; Zeit: " + result.getString("Zeit_gearbeitet"));
-    
+       
                 Mitarbeiter m = new Mitarbeiter();
                 m.setName(result.getString("Name"));
                 m.setPersonalNumber(Integer.parseInt(result.getString("Mitarbeiter_ID")));
@@ -1114,6 +1171,14 @@ public class personalGUI extends javax.swing.JFrame {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, e);
 
             }
+        
+    }
+    
+    private void addTime(Mitarbeiter toAdd, double time){
+        
+        time += toAdd.getTime();
+        
+        toAdd.setTime(time);
         
     }
     
@@ -1360,6 +1425,7 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JButton cmdDeleteWorker;
     private javax.swing.JButton cmdEditWorker;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem mitDB;
     private javax.swing.JMenuItem mitDBClose;
@@ -1370,8 +1436,10 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mitNewMitarbeiter;
     private javax.swing.JMenuItem mitReload;
     private javax.swing.JMenuItem mitSave;
+    private javax.swing.JMenuItem mnuAddTime;
     private javax.swing.JMenu mnuDB;
     private javax.swing.JMenu mnuOptions;
+    private javax.swing.JMenu mnuTime;
     private javax.swing.JPopupMenu.Separator mse1;
     private javax.swing.JPopupMenu.Separator mse2;
     private javax.swing.JPanel pnlControls;
