@@ -75,7 +75,7 @@ public class personalGUI extends javax.swing.JFrame {
         mitReload = new javax.swing.JMenuItem();
         mnuTime = new javax.swing.JMenu();
         mnuAddTime = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mnuSetTime = new javax.swing.JMenuItem();
         mnuDB = new javax.swing.JMenu();
         mitDB = new javax.swing.JMenuItem();
         mitDBSave = new javax.swing.JMenuItem();
@@ -207,8 +207,13 @@ public class personalGUI extends javax.swing.JFrame {
         });
         mnuTime.add(mnuAddTime);
 
-        jMenuItem1.setText("Zeit festlegen");
-        mnuTime.add(jMenuItem1);
+        mnuSetTime.setText("Zeit festlegen");
+        mnuSetTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSetTimeActionPerformed(evt);
+            }
+        });
+        mnuTime.add(mnuSetTime);
 
         jMenuBar1.add(mnuTime);
 
@@ -529,6 +534,40 @@ public class personalGUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_mnuAddTimeActionPerformed
+
+    private void mnuSetTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSetTimeActionPerformed
+        
+                
+        int add = -1;
+        Mitarbeiter toSet = null;
+        
+        double time = -1;
+        
+        if(tabPersonal.getSelectedRow() != -1) {
+            
+            add = findMitarbeiterById(Integer.parseInt(tabPersonal.getValueAt(tabPersonal.getSelectedRow(), 1).toString().substring(1)));
+            
+        }
+        else {
+            add = findMitarbeiterByUnknownId(TYPE_SETTIME);
+        }
+        
+        time = Double.parseDouble(JOptionPane.showInputDialog("Zeit auf was festlegen?\n(In Minuten)"));
+        
+        if(add != -1 && time != -1){
+        
+        System.out.println(add);
+        toSet = mitarbeiter[add];
+        
+        setTime(toSet, time);
+        
+        saveall();
+        loadall();
+        
+        }
+
+        
+    }//GEN-LAST:event_mnuSetTimeActionPerformed
     
     private int findMitarbeiterById(int id) {
         int ret = -1;
@@ -840,17 +879,23 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-            System.out.println("--- Datenbank-Speichern Start ---\n");
+            System.out.println("\n--- Datenbank-Speichern Start ---\n");
         
+            String Name = "";
+            int Mitarbeiter_ID = -1;
+            double Gehalt = -1;
+            double Zeit_gearbeitet = -1;
+            
             for (int i = 0; i < max; i++) {
                 
             try {
+                
                 Mitarbeiter toSave = mitarbeiter[i];
                 
-                String Name = toSave.getName();
-                int Mitarbeiter_ID = toSave.getPersonalNumber();
-                double Gehalt = toSave.getSalary();
-                double Zeit_gearbeitet = toSave.getTime();
+                Name = toSave.getName();
+                Mitarbeiter_ID = toSave.getPersonalNumber();
+                Gehalt = toSave.getSalary();
+                Zeit_gearbeitet = toSave.getTime();
                 
                 // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
                 
@@ -863,12 +908,14 @@ public class personalGUI extends javax.swing.JFrame {
                 break;
             }finally{
                 
-                System.out.println("\n--- Datenbank-Speichern Ende ---\n");
+                System.out.println("Name: " + Name + "; ID: " + Mitarbeiter_ID + "; Gehalt: " + Gehalt + "; Zeit: " + Zeit_gearbeitet);
                 dbCount = i;
                 
             }
                 
             }
+            
+        System.out.println("\n--- Datenbank-Speichern Ende ---\n");
 
     }
 
@@ -1109,9 +1156,35 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
 
+            mitarbeiterCount = dbCount + 1;
+
+                try {
+                    query = conn.createStatement();
+                    
+                    String sql = "DROP TABLE Mitarbeiter";
+                    query.executeUpdate(sql);
+
+                    sql = "CREATE TABLE IF NOT EXISTS Mitarbeiter(Name TEXT," +
+                    " Mitarbeiter_ID INT, Gehalt DOUBLE, Zeit_gearbeitet DOUBLE)";
+                    query.executeUpdate(sql);
+                    
+                    sql = "ALTER TABLE `Mitarbeiter` ADD UNIQUE (`Mitarbeiter_ID`)";
+                    query.executeUpdate(sql);
+                    
+                    saveAllDB();
+
+                }catch(SQLException e){
+
+                    e.printStackTrace();
+
+                }catch(Exception e){
+
+                    e.printStackTrace();
+
+                }
+                
             System.out.println("\n--- Datenbank-Laden Ende ---\n");
-            mitarbeiterCount = dbCount;
-            
+                
         }
         
     } // darkdl.de ni520829_2sql1 3306 ni520829_2sql1 HallohalloHallo
@@ -1179,6 +1252,12 @@ public class personalGUI extends javax.swing.JFrame {
         time += toAdd.getTime();
         
         toAdd.setTime(time);
+        
+    }
+    
+    private void setTime(Mitarbeiter toSet, double time){
+
+        toSet.setTime(time);
         
     }
     
@@ -1425,7 +1504,6 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JButton cmdDeleteWorker;
     private javax.swing.JButton cmdEditWorker;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem mitDB;
     private javax.swing.JMenuItem mitDBClose;
@@ -1439,6 +1517,7 @@ public class personalGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuAddTime;
     private javax.swing.JMenu mnuDB;
     private javax.swing.JMenu mnuOptions;
+    private javax.swing.JMenuItem mnuSetTime;
     private javax.swing.JMenu mnuTime;
     private javax.swing.JPopupMenu.Separator mse1;
     private javax.swing.JPopupMenu.Separator mse2;
