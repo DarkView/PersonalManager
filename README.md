@@ -1,9 +1,15 @@
 # PersonalManager | Ein "Schulprojekt"
 
-Version 1.0.1 des PersonalManagers von DarkView und Dunkler_Held.
+Version 1.0.2 des PersonalManagers von DarkView und Dunkler_Held.
 
 Zum Installieren des Programmes "PersonalManager - Installieren.exe" herunterladen und ausführen.
 https://github.com/Dunkelheiit/PersonalManager/blob/master/PersonalManager%20-%20Installieren.exe
+
+Version 1.0.2:
+
+ [Added] Daten aus Datenbank auslesen.
+ [Added] Mehrere Mitarbeiter löschen.
+ [Fixed] Datenbank nur 64 mal zugreifen - Jetzt unendlich.
 
 Version 1.0.1:
 
@@ -15,4 +21,3 @@ Version 1.0.0:
  - Abspeichern in XML dateien.
  - Auslesen aus den XML dateien.
  - Mit Datenbank verbinden und dort Daten speichern ALLERDINGS nocht nicht auslesen. (Späterer Release)
- 
