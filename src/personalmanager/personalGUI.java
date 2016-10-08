@@ -783,6 +783,8 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         
+            System.out.println("--- Datenbank-Speichern Start ---\n");
+        
             for (int i = 0; i < max; i++) {
                 
             try {
@@ -804,6 +806,7 @@ public class personalGUI extends javax.swing.JFrame {
                 break;
             }finally{
                 
+                System.out.println("\n--- Datenbank-Speichern Ende ---\n");
                 dbCount = i;
                 
             }
@@ -1022,6 +1025,8 @@ public class personalGUI extends javax.swing.JFrame {
             
             model.setRowCount(0);
             
+            System.out.println("--- Datenbank-Laden Start ---\n");
+            
             for (int i = 1000; i < maxDB + 1; i++) {
                 
             String sql = "SELECT `Name`, `Mitarbeiter_ID`, `Gehalt`, `Zeit_gearbeitet` FROM `Mitarbeiter` WHERE Mitarbeiter_ID = '" + i + "'";
@@ -1031,11 +1036,8 @@ public class personalGUI extends javax.swing.JFrame {
             if (result.next()) {
             InputStream stream = result.getBinaryStream(1);
 
-                System.out.println(result.getString("Name"));
-                System.out.println(result.getString("Mitarbeiter_ID"));
-                System.out.println(result.getString("Gehalt"));
-                System.out.println(result.getString("Zeit_gearbeitet"));
-                
+                System.out.println("Name: " + result.getString("Name") + "; ID: " + result.getString("Mitarbeiter_ID") + "; Gehalt: " + result.getString("Gehalt") + "; Zeit: " + result.getString("Zeit_gearbeitet"));
+    
                 Mitarbeiter m = new Mitarbeiter();
                 m.setName(result.getString("Name"));
                 m.setPersonalNumber(Integer.parseInt(result.getString("Mitarbeiter_ID")));
@@ -1050,6 +1052,7 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
 
+            System.out.println("\n--- Datenbank-Laden Ende ---\n");
             mitarbeiterCount = dbCount;
             
         }
