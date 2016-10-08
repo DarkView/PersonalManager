@@ -7,8 +7,8 @@ https://github.com/Dunkelheiit/PersonalManager/blob/master/PersonalManager%20-%2
 
 Version 1.0.2:
 
- [Hinzugefügt] Daten aus Datenbank auslesen. 
- [Hinzugefügt] Mehrere Mitarbeiter löschen. 
+ [Hinzugefügt] Daten aus Datenbank auslesen. |
+ [Hinzugefügt] Mehrere Mitarbeiter löschen. |
  [Behoben] Datenbank nur 64 mal zugreifen - Jetzt unendlich. 
 
 Version 1.0.1:
