@@ -634,7 +634,7 @@ public class personalGUI extends javax.swing.JFrame {
                 }
                 else {
                     
-                    String message = "Möchten Sie alle markierten Mitarbeiter wirklich löschen?";
+                    String message = "Möchten Sie wirklich alle markierten Mitarbeiter löschen?";
                     if(JOptionPane.showConfirmDialog(null, message, "Löschen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION) {
                         try{
                             toDelete = new int[aDelete.length];
