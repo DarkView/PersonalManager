@@ -896,6 +896,8 @@ public class personalGUI extends javax.swing.JFrame {
                 
                 Mitarbeiter toSave = mitarbeiter[i];
                 
+                if (toSave.getPersonalNumber() != -1) {
+                    
                 Name = toSave.getName();
                 Mitarbeiter_ID = toSave.getPersonalNumber();
                 Gehalt = toSave.getSalary();
@@ -906,6 +908,8 @@ public class personalGUI extends javax.swing.JFrame {
                 String sql = "INSERT INTO Mitarbeiter(Name, Mitarbeiter_ID, Gehalt, Zeit_gearbeitet) VALUES ('" + Name + "','" + Mitarbeiter_ID + "','" + Gehalt + "','" + Zeit_gearbeitet + "')";
                 
                 query.executeUpdate(sql);
+                
+                }
                 
             } catch (SQLException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
