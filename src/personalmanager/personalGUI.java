@@ -415,25 +415,8 @@ public class personalGUI extends javax.swing.JFrame {
 
     private void mitDBCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBCloseActionPerformed
 
-        try {
-            conn.close();
-            mitDB.setEnabled(true);
-            mitDBClose.setEnabled(false);
-            mitDBSave.setEnabled(false);
-            mitDBLoad.setEnabled(false);
-            
-            dbHost = "none";
-            dbPort = "none";
-            dbName = "none";
-            dbUser = "none";
-            
-            JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
-            restartApplication();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        closeConn(true);
+        
     }//GEN-LAST:event_mitDBCloseActionPerformed
 
     private void mitDBLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitDBLoadActionPerformed
@@ -914,6 +897,9 @@ public class personalGUI extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
                 break;
+            }catch(NullPointerException ex){
+                Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+                break;
             }finally{
                 
                 System.out.println("Name: " + Name + "; ID: " + Mitarbeiter_ID + "; Gehalt: " + Gehalt + "; Zeit: " + Zeit_gearbeitet);
@@ -1076,6 +1062,10 @@ public class personalGUI extends javax.swing.JFrame {
                         
                         connectDB();
                     
+                    }else{
+                        
+                        closeConn(false);
+                        
                     }
                 }
                 
@@ -1164,7 +1154,7 @@ public class personalGUI extends javax.swing.JFrame {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
 
-            mitarbeiterCount = dbCount + 1;
+            mitarbeiterCount = dbCount;
 
                 try {
                     query = conn.createStatement();
@@ -1272,6 +1262,9 @@ public class personalGUI extends javax.swing.JFrame {
     public void restartApplication(){
         
         try {
+            
+            saveall();
+            
             final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
             final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             System.out.println(currentJar);
@@ -1293,6 +1286,39 @@ public class personalGUI extends javax.swing.JFrame {
         } catch (URISyntaxException | IOException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void closeConn(boolean wasLoaded){
+                
+        try {
+            
+            if (wasLoaded) {
+                conn.close();
+            }
+            
+            mitDB.setEnabled(true);
+            mitDBClose.setEnabled(false);
+            mitDBSave.setEnabled(false);
+            mitDBLoad.setEnabled(false);
+            
+            dbHost = "none";
+            dbPort = "none";
+            dbName = "none";
+            dbUser = "none";
+            
+            if (wasLoaded) {
+                
+                JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
+                
+            }
+
+            restartApplication();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
     }
     
     public static void main(String[] args) {
