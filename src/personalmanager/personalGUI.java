@@ -15,11 +15,13 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -426,6 +428,8 @@ public class personalGUI extends javax.swing.JFrame {
             dbUser = "none";
             
             JOptionPane.showMessageDialog(null, "Verbindung wurde getrennt.", "", JOptionPane.INFORMATION_MESSAGE);
+            restartApplication();
+            
         } catch (SQLException ex) {
             Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1261,31 +1265,31 @@ public class personalGUI extends javax.swing.JFrame {
         
     }
     
-//    public void restartApplication(){
-//        
-//        try {
-//            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
-//            final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-//            System.out.println(currentJar);
-//            
-//            /* is it a jar file? */
-//            if(!currentJar.getName().endsWith(".jar"))
-//                return;
-//            
-//            /* Build command: java -jar application.jar */
-//            final ArrayList<String> command = new ArrayList<String>();
-//            command.add(javaBin);
-//            command.add("-jar");
-//            command.add(currentJar.getPath());
-//            
-//            final ProcessBuilder builder = new ProcessBuilder(command);
-//            builder.start();
-//            System.exit(0);
-//            
-//        } catch (URISyntaxException | IOException ex) {
-//            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    public void restartApplication(){
+        
+        try {
+            final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+            final File currentJar = new File(personalGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            System.out.println(currentJar);
+            
+            /* is it a jar file? */
+            if(!currentJar.getName().endsWith(".jar"))
+                return;
+            
+            /* Build command: java -jar application.jar */
+            final ArrayList<String> command = new ArrayList<String>();
+            command.add(javaBin);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+            
+            final ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+            System.exit(0);
+            
+        } catch (URISyntaxException | IOException ex) {
+            Logger.getLogger(personalGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public static void main(String[] args) {
         /* Set the Nimbus look and feel */
